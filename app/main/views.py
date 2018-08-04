@@ -6,15 +6,6 @@ from . import main
 def index():
     return render_template('main.html')
 
-@main.route('/register', methods=['get', 'post'])
-def register():
-    return render_template('register.html')
-
-
-@main.route('/login', methods=['get', 'post'])
-def login():
-    return render_template('login.html')
-
 
 @main.route('/manager/<id>')
 def manager(id):
