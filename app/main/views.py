@@ -6,17 +6,6 @@ from . import main
 def index():
     return render_template('main.html')
 
-# Register
-# Login
-# Main page
-# Create a new manager
-# Create a new model
-# Create a new club
-# Manager’s Profile
-# Model’s Profile
-# Club Profile
-
-
 @main.route('/register', methods=['get', 'post'])
 def register():
     return render_template('register.html')
