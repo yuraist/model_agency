@@ -50,7 +50,7 @@ class Model(db.Model):
     club_id = db.Column(db.Integer, db.ForeignKey('clubs.id'))
     avatar_id = db.Column(db.Integer, db.ForeignKey('photos.id'))
 
-    photos = db.relationship('Photo', backref='model', lazy='dynamic')
+    photos = db.relationship('Photo', backref='model')
     contracts = db.relationship('Contract', backref='model', lazy='dynamic')
 
 
@@ -77,3 +77,4 @@ class Contract(db.Model):
     work_period = db.Column(db.Integer)  # Period of work in days
     model_id = db.Column(db.Integer, db.ForeignKey('models.id'))
     club_id = db.Column(db.Integer, db.ForeignKey('clubs.id'))
+    manager_id = db.Column(db.Integer, db.ForeignKey('users.id'))
