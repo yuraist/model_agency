@@ -1,3 +1,35 @@
 {% extends 'base.html' %}
 
 {% block title %}Добавить менеджера{% endblock %}
+
+{% block content %}
+  <h2>Новый менеджер</h2>
+  <form action="" method="post">
+    {{ form.hidden_tag() }}
+
+    <p>
+      {{ form.name.label }}<br>
+      {{ form.name(size=64) }}<br>
+      {% for error in form.name.errors %}
+        <p style="color: orangered;">error</p>
+      {% endfor %}
+
+    <p>
+      {{ form.username.label }}<br>
+      {{ form.username(size=64) }}<br>
+      {% for error in form.username.errors %}
+        <p style="color: orangered;">error</p>
+      {% endfor %}
+
+    <p>
+      {{ form.password.label }}<br>
+      {{ form.password(size=64) }}<br>
+      {% for error in form.password.errors %}
+        <p style="color: orangered;">error</p>
+      {% endfor %}
+
+    <p>
+      {{ form.submit() }}
+
+  </form>
+{% endblock %}
