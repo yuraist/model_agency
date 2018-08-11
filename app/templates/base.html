@@ -5,9 +5,27 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-{% block content %}{% endblock %}
+<nav>
+  {% block nav %}
+    <ul>
+    <li class="nav-item"><a href="#" id="logo">Модельное агенство</a></li>
+    <li class="nav-item"><a href="#" id="add-item">Добавить модель</a></li>
+    <li class="nav-item"><a href="#" id="add-item">Добавить менеджера</a></li>
+    <li class="nav-item"><a href="#" id="add-item">Добавить клуб</a></li>
+    <li style="float:right; margin-top:26px;" class="nav-item"><a href="#">Выйти</a></li>
+    <li style="float: right;" class="nav-item">{% block username %}Администратор Александра{% endblock %}</li>
+  </ul>
+  {% endblock %}
+</nav>
+<div class="content">
+  {% block content %}{% endblock %}
+</div>
+<footer>
+  Модельное агенство &copy; 2018
+</footer>
 </body>
 </html>

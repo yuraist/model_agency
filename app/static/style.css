@@ -1,0 +1,113 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+    text-decoration: none;
+    color: #575757;
+}
+
+nav {
+    overflow: hidden;
+    background-color: #F4F4F4;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+.nav-item {
+    float: left;
+    width: 100px;
+    text-align: center;
+    margin: 18px 0px;
+    font-weight: 300;
+    font-size: 1em;
+}
+
+.nav-item:first-child {
+    margin: 15px 25px 15px 15px;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.nav-item:last-child {
+    width: 120px;
+    margin-top: 19px;
+    font-size: 0.9em;
+}
+
+.content {
+    width: 100%;
+}
+
+footer {
+    height: 60px;
+    padding: 22px;
+    width: 100%;
+
+    background-color: #F8F3EF;
+    color: #B99F8B;
+    text-align: center;
+    font-weight: 200;
+}
+
+.content {
+    width: 90%;
+    margin: auto;
+}
+
+.content h2 {
+    margin-bottom: 20px;
+}
+
+.list {
+    padding: 2%;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    text-align: left;
+}
+
+.table-head {
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+td:first-child {
+    text-align: left;
+    width: 50%;
+}
+
+td:last-child {
+    text-align: center;
+}
+
+td {
+    padding: 7px;
+}
+
+td a {
+    text-decoration: underline;
+}
+
+.list ul {
+    list-style-type: none;
+}
+
+.list li {
+    padding: 7px;
+}
+
+.list li a {
+    text-decoration: underline;
+}
+
+#managers, #clubs {
+    margin: 0px;
+    width: 49%;
+    display: inline-block;
+    vertical-align: top;
+}

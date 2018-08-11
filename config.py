@@ -15,7 +15,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-
+    TESTING = True
+    TEMPLATES_AUTO_RELOAD = True
 
 config = {
     'dev': DevelopmentConfig,
