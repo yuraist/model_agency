@@ -8,9 +8,9 @@ if os.path.exists('.env'):
         if len(var) == 2:
             os.environ[var[0]] = var[1]
 
-from app import create_app, db
+from app import create_app
 from app.models import *
-from flask_script import Manager, Shell
+from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
 app = create_app('dev')
@@ -18,6 +18,15 @@ manager = Manager(app)
 migrate = Migrate(app, db)
 
 manager.add_command('db', MigrateCommand)
+
+
+def deploy():
+    from flask_migrate import upgrade
+
+    upgrade()
+
+    Role.insert_roles()
+
 
 if __name__ == '__main__':
     manager.run()

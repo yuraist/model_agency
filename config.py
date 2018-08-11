@@ -8,6 +8,8 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_DATABASE_URI = str(os.environ.get('DATABASE_URL'))
 
+    LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
+
     @staticmethod
     def init_app(app):
         pass
