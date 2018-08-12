@@ -19,13 +19,13 @@ class AddModelForm(FlaskForm):
     departure_date = DateField('Желаемая дата вылета')
     start_date = DateField('Дата начала работы')
     ticket_price = StringField('Цена билета')
-    club = SelectField('Клуб')
-    avatar = FileField('Загрузить аватар')
-    photos = MultipleFileField('Загрузить несколько фотографий')
+    # club = SelectField('Клуб')
+    # avatar = FileField('Загрузить аватар')
+    # photos = MultipleFileField('Загрузить несколько фотографий')
     submit = SubmitField('Добавить')
 
-    def __init__(self, clubs=[]):
-        self.club.choices = clubs
+    # def __init__(self, clubs=[]):
+    #     self.club.choices = clubs
 
 
 class AddClubForm(FlaskForm):

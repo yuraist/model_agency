@@ -97,7 +97,7 @@ class Model(db.Model):
     departure_date = db.Column(db.Date)
     start_date = db.Column(db.Date)
     ticket_price = db.Column(db.Float)
-    accepted = db.Column(db.Boolean)
+    accepted = db.Column(db.Boolean, default=False)
 
     manager_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     club_id = db.Column(db.Integer, db.ForeignKey('clubs.id'))
@@ -110,10 +110,13 @@ class Model(db.Model):
 class Club(db.Model):
     __tablename__ = 'clubs'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128))
+    name = db.Column(db.String(128), unique=True)
     city = db.Column(db.String(64))
 
     models = db.relationship('Model', backref='club')
+
+    def __repr__(self):
+        return self.name
 
 
 class Photo(db.Model):

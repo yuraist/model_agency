@@ -1,3 +1,53 @@
 {% extends 'base.html' %}
 
 {% block title %}Добавить модель{% endblock %}
+
+
+{% block content %}
+<h2>Новая модель</h2>
+
+  <div class="login-form">
+    <form action="{{ url_for('main.create_model') }}" method="post">
+      {{ form.hidden_tag() }}
+      <p>
+        {{ form.full_name.label }}<br>
+        {{ form.full_name(size=64) }}
+      </p>
+      <p>
+        {{ form.date_of_birth.label }}<br>
+        {{ form.date_of_birth() }}
+      </p>
+      <p>
+        {{ form.city.label }}<br>
+        {{ form.city() }}
+      </p>
+      <p>
+        {{ form.phone.label }}<br>
+        {{ form.phone(size=64) }}
+      </p>
+      <p>
+        {{ form.departure_date.label }}<br>
+        {{ form.departure_date() }}
+      </p>
+      <p>
+        {{ form.start_date.label }}<br>
+        {{ form.start_date() }}
+      </p>
+      <p>
+        {{ form.ticket_price.label }}<br>
+        {{ form.ticket_price(size=64) }}
+      </p>
+      <p>
+{#        {{ form.club.label }}<br>#}
+{#        {{ form.club() }}#}
+      </p>
+      <p>
+        {{ form.submit() }}
+      </p>
+    </form>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  {% include "auth/_auth_footer.html" %}
+{% endblock %}
