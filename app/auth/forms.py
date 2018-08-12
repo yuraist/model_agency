@@ -5,14 +5,14 @@ from app.models import User
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Имя пользователя', validators=[DataRequired()])
+    username = StringField('Логин', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Имя пользователя', validators=[DataRequired(), Length(1, 64)])
+    username = StringField('Логин', validators=[DataRequired(), Length(1, 64)])
     password = PasswordField('Пароль', validators=[DataRequired(), EqualTo('password2')])
     password2 = PasswordField('Повторите пароль', validators=[DataRequired()])
     submit = SubmitField('Регистрация')

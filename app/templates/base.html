@@ -12,20 +12,28 @@
 <nav>
   {% block nav %}
     <ul>
-    <li class="nav-item"><a href="#" id="logo">Модельное агенство</a></li>
-    <li class="nav-item"><a href="#" id="add-item">Добавить модель</a></li>
-    <li class="nav-item"><a href="#" id="add-item">Добавить менеджера</a></li>
-    <li class="nav-item"><a href="#" id="add-item">Добавить клуб</a></li>
-    <li style="float:right; margin-top:26px;" class="nav-item"><a href="#">Выйти</a></li>
-    <li style="float: right;" class="nav-item">{% block username %}Администратор Александра{% endblock %}</li>
-  </ul>
+      <li class="nav-item"><a href="{{ url_for('main.index') }}" id="logo">Модельное агенство</a></li>
+      <li class="nav-item"><a href="{{ url_for('main.create_model') }}" id="add-item">Добавить модель</a></li>
+      <li class="nav-item"><a href="{{ url_for('main.register_manager') }}" id="add-item">Добавить менеджера</a></li>
+      <li class="nav-item"><a href="{{ url_for('main.create_club') }}" id="add-item">Добавить клуб</a></li>
+      {% if current_user.is_authenticated %}
+        <li style="float:right; margin-top:26px;" class="nav-item"><a href="{{ url_for('auth.logout') }}">Выйти</a></li>
+        <li style="float: right;" class="nav-item"><p>Менеджер <br>{{ current_user.username }}</p></li>
+      {% else %}
+        <li style="float:right; margin-top:26px;" class="nav-item"><a href="{{ url_for('auth.logout') }}">Выйти</a></li>
+        <li style="float: right;" class="nav-item"><p>Пользователь неавторизован</p></li>
+      {% endif %}
+    </ul>
   {% endblock %}
 </nav>
 <div class="content">
   {% block content %}{% endblock %}
 </div>
-<footer>
-  Модельное агенство &copy; 2018
-</footer>
+{% block footer %}
+  <footer {% block footer_attr %}{% endblock %}>
+    <p>Модельное агентство &copy; 2018</p>
+    <p>Developed by <a href="https://vk.com/yuraist">@yuraist</a></p>
+  </footer>
+{% endblock %}
 </body>
 </html>

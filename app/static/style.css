@@ -7,6 +7,10 @@
     color: #575757;
 }
 
+a:hover {
+    text-decoration: underline;
+}
+
 nav {
     overflow: hidden;
     background-color: #F4F4F4;
@@ -20,7 +24,7 @@ nav ul {
     float: left;
     width: 100px;
     text-align: center;
-    margin: 18px 0px;
+    margin: 18px 0;
     font-weight: 300;
     font-size: 1em;
 }
@@ -38,21 +42,7 @@ nav ul {
 }
 
 .content {
-    width: 100%;
-}
-
-footer {
-    height: 60px;
-    padding: 22px;
-    width: 100%;
-
-    background-color: #F8F3EF;
-    color: #B99F8B;
-    text-align: center;
-    font-weight: 200;
-}
-
-.content {
+    padding-top: 40px;
     width: 90%;
     margin: auto;
 }
@@ -61,8 +51,27 @@ footer {
     margin-bottom: 20px;
 }
 
+footer {
+    height: 70px;
+    padding: 18px;
+    width: 100%;
+
+    background-color: #F8F3EF;
+}
+
+footer p {
+    color: #B99F8B;
+    text-align: center;
+    font-weight: 200;
+}
+
+.unlined-btn {
+    color: #8c7159;
+    text-decoration: underline;
+    font-size: 0.9em;
+}
+
 .list {
-    padding: 2%;
     margin-bottom: 10px;
 }
 
@@ -106,8 +115,72 @@ td a {
 }
 
 #managers, #clubs {
-    margin: 0px;
+    margin: 0;
     width: 49%;
     display: inline-block;
     vertical-align: top;
+}
+
+.auth-block {
+    height: 400px;
+    margin-top: 100px;
+}
+
+.auth-logo {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 20px;
+    text-align: center;
+    font-size: 2.2em;
+}
+
+.login-form {
+    width: 470px;
+    margin: auto;
+}
+
+.login-form p {
+    margin: 10px;
+}
+
+.login-form label {
+    font-weight: 700;
+    font-size: 1.4em;
+}
+
+input[type=text], input[type=password] {
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px #E3E3E3 solid;
+    max-width: 100%;
+    height: 30px;
+    font-size: 1em;
+}
+
+#remember-input {
+    text-align: left;
+}
+
+#remember {
+    margin-left: 5px;
+    font-weight: 200;
+    font-size: 0.9em;
+}
+
+#submit {
+    text-align: center;
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    border-radius: 20px;
+    border: none;
+    background-color: #E3E3E3;
+    font-size: 1em;
+    font-weight: 200;
+}
+
+.auth-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
