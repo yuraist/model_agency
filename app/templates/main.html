@@ -2,7 +2,13 @@
 
 {% block title %}Главная страница{% endblock %}
 
-{% block username %}Администратор Владимир{% endblock %}
+{% block username %}
+  {% if current_user.is_authenticated %}
+    <h2>Менеджер {{ manager.username }}</h2>
+  {% else %}
+    <h2>Пользователь не авторизован</h2>
+  {% endif %}
+{% endblock %}
 
 {% block content %}
   <div class="list">
@@ -13,80 +19,29 @@
         <td class="table-head">Клуб</td>
         <td class="table-head">Осталось <br> работать</td>
       </tr>
-      <tr>
-        <td><a href="#">Уткина Людмила Ивановна</a></td>
-        <td>Одинокий Джо</td>
-        <td>12 дней</td>
-      </tr>
-      <tr>
-        <td><a href="#">Уткина Людмила Ивановна</a></td>
-        <td>Одинокий Джо</td>
-        <td>12 дней</td>
-      </tr>
-      <tr>
-        <td><a href="#">Уткина Людмила Ивановна</a></td>
-        <td>Одинокий Джо</td>
-        <td>12 дней</td>
-      </tr>
-      <tr>
-        <td><a href="#">Уткина Людмила Ивановна</a></td>
-        <td>Одинокий Джо</td>
-        <td>12 дней</td>
-      </tr>
-      <tr>
-        <td><a href="#">Уткина Людмила Ивановна</a></td>
-        <td>Одинокий Джо</td>
-        <td>12 дней</td>
-      </tr>
-      <tr>
-        <td><a href="#">Уткина Людмила Ивановна</a></td>
-        <td>Одинокий Джо</td>
-        <td>12 дней</td>
-      </tr>
-      <tr>
-        <td><a href="#">Уткина Людмила Ивановна</a></td>
-        <td>Одинокий Джо</td>
-        <td>12 дней</td>
-      </tr>
-      <tr>
-        <td><a href="#">Уткина Людмила Ивановна</a></td>
-        <td>Одинокий Джо</td>
-        <td>12 дней</td>
-      </tr>
-      <tr>
-        <td><a href="#">Уткина Людмила Ивановна</a></td>
-        <td>Одинокий Джо</td>
-        <td>12 дней</td>
-      </tr>
+      {% for model in models %}
+        <tr>
+          <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
+          <td>{{ model.club.name }}</td>
+          <td>{{ model.end_date }} дней</td>
+        </tr>
+      {% endfor %}
     </table>
   </div>
   <div class="list" id="managers">
     <h2 class="block-title">Менеджеры</h2>
     <ul>
-      <li><a href="#">Алексей Новиков</a></li>
-      <li><a href="#">Алексей Новиков</a></li>
-      <li><a href="#">Алексей Новиков</a></li>
-      <li><a href="#">Алексей Новиков</a></li>
-      <li><a href="#">Алексей Новиков</a></li>
-      <li><a href="#">Алексей Новиков</a></li>
-      <li><a href="#">Алексей Новиков</a></li>
-      <li><a href="#">Алексей Новиков</a></li>
+      {% for manager in managers %}
+        <li><a href="{{ url_for('main.manager', id=manager.id) }}">{{ manager.name }}</a></li>
+      {% endfor %}
     </ul>
   </div>
   <div class="list" id="clubs">
     <h2 class="block-title">Клубы</h2>
     <ul>
-      <li><a href="#">Одинокий Джо</a></li>
-      <li><a href="#">Одинокий Джо</a></li>
-      <li><a href="#">Одинокий Джо</a></li>
-      <li><a href="#">Одинокий Джо</a></li>
-      <li><a href="#">Одинокий Джо</a></li>
-      <li><a href="#">Одинокий Джо</a></li>
-      <li><a href="#">Одинокий Джо</a></li>
-      <li><a href="#">Одинокий Джо</a></li>
-      <li><a href="#">Одинокий Джо</a></li>
-      <li><a href="#">Одинокий Джо</a></li>
-      <li><a href="#">Одинокий Джо</a></li>
+      {% for club in clubs %}
+        <li><a href="{{ url_for('main.club', id=club.id) }}">{{ club.name }}</a></li>
+      {% endfor %}
     </ul>
   </div>
   </div>

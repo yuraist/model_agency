@@ -1,3 +1,43 @@
 {% extends 'base.html' %}
 
-{% block title %}Менеджер #{{id}} {% endblock %}
+{% block title %}Менеджер {{ manager.username }} {% endblock %}
+
+{% block content %}
+  <h2>Менеджер {{ manager.username }}</h2>
+
+  <div class="manager-profile">
+    <div class="avatar">
+      <img src="{{ url_for('static', filename='man-user.png') }}" alt="" class="avatar">
+    </div>
+    <div class="model-list">
+      <h3>Всего моделей: {{ models|length }}</h3>
+      <table>
+        {% for model in models %}
+          <tr>
+            <td>{{ model.full_name }}</td>
+            <td>{{ model.start_date }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="models-archive">
+      <h2>Архив моделей</h2>
+      <table>
+        <tr>
+          <td>Фамилия Имя Отчество</td>
+          <td>Клуб</td>
+          <td>Окончание срока</td>
+          <td>Новый срок</td>
+        </tr>
+        {% for model in models_archive %}
+          <tr>
+            <td>{{ model.full_name }}</td>
+            <td>{{ model.club.name }}</td>
+            <td>{{ model.end_date }}</td>
+            <td>{{ model.next_date }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endblock %}

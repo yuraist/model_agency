@@ -184,3 +184,32 @@ input[type=text], input[type=password] {
     bottom: 0;
     left: 0;
 }
+
+.manager-profile {
+    vertical-align: top;
+}
+
+.avatar {
+    vertical-align: top;
+    width: 49%;
+    display: inline-block;
+}
+
+img.avatar {
+    width: 250px;
+    margin: 20px;
+}
+
+.model-list {
+    vertical-align: top;
+    width: 49%;
+    display: inline-block;
+}
+
+.models-archive {
+    display: block;
+    width: 100%;
+    background-color: #FAFAFA;
+    padding: 20px;
+    margin-bottom: 20px;
+}

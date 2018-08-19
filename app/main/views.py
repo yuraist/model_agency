@@ -9,11 +9,18 @@ from app.models import User, Club, Model
 
 
 @main.route('/')
+@login_required
 def index():
-    return render_template('main.html')
+    managers = User.query.all()
+    models = Model.query.all()
+    clubs = Club.query.all()
+    return render_template('main.html', managers=managers,
+                           models=models,
+                           clubs=clubs)
 
 
 @main.route('/register_manager', methods=['get', 'post'])
+@login_required
 def register_manager():
     form = AddManagerForm()
     if form.validate_on_submit():
@@ -37,12 +44,12 @@ def register_manager():
             db.session.add(manager)
             db.session.commit()
 
-        return render_template('manager.html')
+        return redirect(url_for('main.manager', id=manager.id))
     return render_template('register_manager.html', form=form)
 
 
-@login_required
 @main.route('/create_model', methods=['get', 'post'])
+@login_required
 def create_model():
     errors = []
 
@@ -50,10 +57,8 @@ def create_model():
     # clubs = []
     # for club in Club.query.all():
     #     clubs.append(club.name)
-    print(1)
     form = AddModelForm()
     if form.validate_on_submit():
-        print(2)
         model = Model()
         model.full_name = form.full_name.data
         model.date_of_birth = form.date_of_birth.data
@@ -63,7 +68,7 @@ def create_model():
         model.start_date = form.start_date.data
         model.ticket_price = form.ticket_price.data
         # club_name = form.club.data
-        print(3)
+
         # Find for a club
         # club = Club.query.filter_by(name=club_name).first()
         # if club is None:
@@ -80,6 +85,7 @@ def create_model():
 
 
 @main.route('/create_club', methods=['get', 'post'])
+@login_required
 def create_club():
     errors = []
     form = AddClubForm()
@@ -103,7 +109,8 @@ def create_club():
 
 @main.route('/manager/<id>')
 def manager(id):
-    return render_template('manager.html', id=id)
+    manager = User.query.filter_by(id=id).first()
+    return render_template('manager.html', manager=manager)
 
 
 @main.route('/model/<id>')

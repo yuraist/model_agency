@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import login_manager
 
+from datetime import date
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -96,6 +97,7 @@ class Model(db.Model):
     phone = db.Column(db.String(14))
     departure_date = db.Column(db.Date)
     start_date = db.Column(db.Date)
+    next_date = db.Column(db.Date)
     ticket_price = db.Column(db.Float)
     accepted = db.Column(db.Boolean, default=False)
 
@@ -105,6 +107,11 @@ class Model(db.Model):
 
     photos = db.relationship('Photo', backref='model')
     contracts = db.relationship('Contract', backref='model', lazy='dynamic')
+
+    # TODO: - Count {start_date - date}
+    @property
+    def end_date(self):
+        return 12
 
 
 class Club(db.Model):
