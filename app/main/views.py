@@ -65,6 +65,7 @@ def create_model():
         model.departure_date = datetime.strptime(request.form['departure_date'], '%d.%m.%Y').date()
         model.ticket_price = int(request.form['ticket_price'])
         model.club_id = int(request.form['club'])
+        model.manager_id = current_user.id
 
         db.session.add(model)
         db.session.commit()
@@ -100,7 +101,8 @@ def create_club():
 @main.route('/manager/<id>')
 def manager(id):
     manager = User.query.filter_by(id=id).first()
-    return render_template('manager.html', manager=manager)
+    models = manager.models
+    return render_template('manager.html', manager=manager, models=models)
 
 
 @main.route('/model/<id>')
