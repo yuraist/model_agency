@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request
 from flask_login import current_user, login_required
 
 from . import main
@@ -7,6 +7,7 @@ from .forms import AddManagerForm, AddModelForm, AddClubForm
 from app import db
 from app.models import User, Club, Model
 
+from datetime import datetime
 
 @main.route('/')
 @login_required
@@ -35,16 +36,16 @@ def register_manager():
         # If there is no manager with the username then create a new one
         if manager is None:
             # Create a new manager
-            manager = User()
-            manager.name = name
-            manager.username = username
-            manager.password = password
+            new_manager = User()
+            new_manager.name = name
+            new_manager.username = username
+            new_manager.password = password
 
             # Save him into the database
-            db.session.add(manager)
+            db.session.add(new_manager)
             db.session.commit()
 
-        return redirect(url_for('main.manager', id=manager.id))
+        return redirect(url_for('main.manager', id=new_manager.id))
     return render_template('register_manager.html', form=form)
 
 
@@ -52,36 +53,25 @@ def register_manager():
 @login_required
 def create_model():
     errors = []
+    clubs = Club.query.all()
 
-    # Get club list
-    # clubs = []
-    # for club in Club.query.all():
-    #     clubs.append(club.name)
-    form = AddModelForm()
-    if form.validate_on_submit():
+    if request.method == 'POST':
         model = Model()
-        model.full_name = form.full_name.data
-        model.date_of_birth = form.date_of_birth.data
-        model.city = form.city.data
-        model.phone = form.phone.data
-        model.departure_date = form.date_of_birth.data
-        model.start_date = form.start_date.data
-        model.ticket_price = form.ticket_price.data
-        # club_name = form.club.data
+        model.full_name = request.form['fullname']
+        model.city = request.form['city']
+        model.date_of_birth = datetime.strptime(request.form['date_of_birth'], '%d.%m.%Y').date()
+        model.phone = request.form['phone']
+        model.start_date = datetime.strptime(request.form['start_date'], '%d.%m.%Y').date()
+        model.departure_date = datetime.strptime(request.form['departure_date'], '%d.%m.%Y').date()
+        model.ticket_price = int(request.form['ticket_price'])
+        model.club_id = int(request.form['club'])
 
-        # Find for a club
-        # club = Club.query.filter_by(name=club_name).first()
-        # if club is None:
-        #     errors.append('Не удалось найти клуб')
-        #
-        # model.club_id = club.id
-        model.manager_id = current_user.id
-
-        #TODO: - Implement photo uploading
         db.session.add(model)
         db.session.commit()
+
         return redirect(url_for('main.model', id=model.id))
-    return render_template('create_model.html', form=form, errors=errors)
+
+    return render_template('create_model.html', clubs=clubs, errors=errors)
 
 
 @main.route('/create_club', methods=['get', 'post'])
@@ -115,9 +105,11 @@ def manager(id):
 
 @main.route('/model/<id>')
 def model(id):
-    return render_template('model.html', id=id)
+    model = Model.query.filter_by(id=id).first()
+    return render_template('model.html', model=model)
 
 
 @main.route('/club/<id>')
 def club(id):
-    return render_template('club.html', id=id)
+    club = Club.query.filter_by(id=id).first()
+    return render_template('club.html', club=club)

@@ -44,6 +44,7 @@ nav ul {
 .content {
     padding-top: 40px;
     width: 90%;
+    min-height: 80vh;
     margin: auto;
 }
 
@@ -56,6 +57,7 @@ footer {
     padding: 18px;
     width: 100%;
 
+    margin-top: 40px;
     background-color: #F8F3EF;
 }
 
@@ -72,7 +74,9 @@ footer p {
 }
 
 .list {
+    padding: 20px;
     margin-bottom: 10px;
+    background: #FAFAFA;
 }
 
 table {
@@ -115,7 +119,6 @@ td a {
 }
 
 #managers, #clubs {
-    margin: 0;
     width: 49%;
     display: inline-block;
     vertical-align: top;
@@ -139,11 +142,11 @@ td a {
     margin: auto;
 }
 
-.login-form p {
+.model-form p, .login-form p {
     margin: 10px;
 }
 
-.login-form label {
+.model-form label, .login-form label {
     font-weight: 700;
     font-size: 1.4em;
 }
@@ -212,4 +215,65 @@ img.avatar {
     background-color: #FAFAFA;
     padding: 20px;
     margin-bottom: 20px;
+}
+
+.model-form {
+    margin: auto;
+    width: 800px;
+}
+
+.left-inputs, .right-inputs{
+    display: inline-block;
+    width: 46%;
+    vertical-align: top;
+}
+
+.left-inputs {
+    margin-right: 20px;
+}
+
+.right-inputs {
+    margin-left: 20px;
+}
+
+.left-inputs input[type=text] {
+    width: 450px;
+    margin-bottom: 20px;
+    margin-top: 5px;
+}
+
+.model-avatar {
+    width: 250px;
+    margin: auto;
+}
+
+.model-avatar img {
+    width: 250px;
+}
+
+.upload-file {
+    width: 200px;
+    margin: 20px auto;
+}
+
+.upload-file label {
+    font-weight: 100;
+    font-size: 1.2em;
+    margin: 30px;
+}
+
+input[type=file] {
+    margin: 20px;
+}
+
+select {
+    width: 100%;
+    height: 80px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.model-info {
+    width: 45%;
+    display: inline-block;
 }

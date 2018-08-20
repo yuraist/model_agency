@@ -1,3 +1,56 @@
 {% extends 'base.html' %}
 
-{% block title %}Модель #{{id}}{% endblock %}
+{% block title %}Модель {{ model.full_name }}{% endblock %}
+
+{% block content %}
+  <h2>{{ model.full_name }}</h2>
+
+  <div class="model-profile">
+    <div class="avatar">
+      <img src="{{ url_for('static', filename='man-user.png') }}" alt="" class="avatar">
+    </div>
+    <div class="model-info">
+      <table>
+        <tr>
+          <td>ФИО</td>
+          <td>{{ model.full_name }}</td>
+        </tr>
+        <tr>
+          <td>Дата рождения</td>
+          <td>{{ model.date_of_birth }}</td>
+        </tr>
+        <tr>
+          <td>Город</td>
+          <td>{{ model.city }}</td>
+        </tr>
+        <tr>
+          <td>Номер телефона</td>
+          <td>{{ model.phone }}</td>
+        </tr>
+        <tr>
+          <td>Дата начала работы</td>
+          <td>{{ model.start_date }}</td>
+        </tr>
+        <tr>
+          <td>Желаемая дата вылета</td>
+          <td>{{ model.departure_date }}</td>
+        </tr>
+        <tr>
+          <td>Цена билета</td>
+          <td>{{ model.ticket_price }}</td>
+        </tr>
+        <tr>
+          <td>Клуб</td>
+          <td>{{ model.club.name }}</td>
+        </tr>
+      </table>
+    </div>
+    {% if model.photos %}
+      <div class="gallery">
+        {% for photo in model.photos %}
+          <img src="{{ photo }}" alt="" class="gallery-photo">
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

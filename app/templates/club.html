@@ -1,3 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title %}Клуб #{{ id }}{% endblock %}
+{% block title %}Клуб {{ club.name }}{{ id }}{% endblock %}
+
+{% block content %}
+  <h2>{{ club.name }}</h2>
+  <div class="model-list">
+  <h3>Всего моделей: {{ club.models|length }}</h3>
+  <table>
+  <tr>
+    <td>Фамилия Имя Отчество</td>
+    <td>Осталось работать</td>
+  </tr>
+    {% for model in club.models %}
+      <tr>
+        <td>model.full_name</td>
+        <td>model.end_date</td>
+      </tr>
+    {% endfor %}
+  </table>
+  </div>
+{% endblock %}

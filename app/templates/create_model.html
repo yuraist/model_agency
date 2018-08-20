@@ -4,50 +4,55 @@
 
 
 {% block content %}
-<h2>Новая модель</h2>
+  <h2>Новая модель</h2>
 
-  <div class="login-form">
+  <div class="model-form">
     <form action="{{ url_for('main.create_model') }}" method="post">
-      {{ form.hidden_tag() }}
-      <p>
-        {{ form.full_name.label }}<br>
-        {{ form.full_name(size=64) }}
-      </p>
-      <p>
-        {{ form.date_of_birth.label }}<br>
-        {{ form.date_of_birth() }}
-      </p>
-      <p>
-        {{ form.city.label }}<br>
-        {{ form.city() }}
-      </p>
-      <p>
-        {{ form.phone.label }}<br>
-        {{ form.phone(size=64) }}
-      </p>
-      <p>
-        {{ form.departure_date.label }}<br>
-        {{ form.departure_date() }}
-      </p>
-      <p>
-        {{ form.start_date.label }}<br>
-        {{ form.start_date() }}
-      </p>
-      <p>
-        {{ form.ticket_price.label }}<br>
-        {{ form.ticket_price(size=64) }}
-      </p>
-      <p>
-{#        {{ form.club.label }}<br>#}
-{#        {{ form.club() }}#}
-      </p>
-      <p>
-        {{ form.submit() }}
-      </p>
+
+      <div class="left-inputs">
+        <label for="fullname">ФИО</label>
+        <input type="text" name="fullname" placeholder="Иванова Алина Алексеевна" required>
+
+        <label for="date_of_birth">Дата рождения</label>
+        <input type="text" name="date_of_birth" placeholder="01.01.1996" required>
+
+        <label for="city">Город</label>
+        <input type="text" name="city" placeholder="Москва" required>
+
+        <label for="phone">Номер телефона</label>
+        <input type="text" name="phone" placeholder="+79112345678">
+
+        <label for="start_date">Дата начала работы</label>
+        <input type="text" name="start_date" placeholder="01.01.2019">
+
+        <label for="departure_date">Желаемая дата вылета</label>
+        <input type="text" name="departure_date" placeholder="01.01.2019">
+
+        <label for="ticket_price">Цена билета</label>
+        <input type="text" name="ticket_price" placeholder="3500">
+
+        <label for="club">Клуб</label><br>
+        <select name="club" id="club">
+          {% for club in clubs %}
+            <option value="{{ club.id }}">{{ club.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="right-inputs">
+        <div class="model-avatar">
+          <img src="{{ url_for('static', filename='man-user.png') }}" alt="" id="model-ava">
+        </div>
+        <div class="upload-file">
+          <label for="file">Загрузить фото</label>
+          <input type="file" name="avatar" id="file">
+        </div>
+      </div>
+
+      <input type="submit" value="Добавить" id="submit">
     </form>
   </div>
 {% endblock %}
 
-{% block footer %}
-  {% include "auth/_auth_footer.html" %}
-{% endblock %}
+{#{% block footer %}#}
+{#  {% include "auth/_auth_footer.html" %}#}
+{#{% endblock %}#}
