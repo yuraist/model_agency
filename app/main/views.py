@@ -7,10 +7,9 @@ from werkzeug.utils import secure_filename
 from . import main
 from .forms import AddManagerForm, AddClubForm
 
-from manage import app
 from app import db
 from app.models import User, Club, Model, Photo
-from config import allowed_file
+from config import allowed_file, UPLOAD_FOLDER
 
 from datetime import datetime
 
@@ -83,7 +82,7 @@ def create_model():
 
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                filepath = os.path.join(UPLOAD_FOLDER, filename)
                 file.save(filepath)
 
                 photo = Photo()

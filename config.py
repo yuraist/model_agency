@@ -1,5 +1,9 @@
 import os
+
 base_dir = os.path.abspath(os.path.dirname(__file__))
+
+# Uploading images
+UPLOAD_FOLDER = os.path.join(base_dir, 'app/static/images')
 
 
 class Config:
@@ -9,9 +13,6 @@ class Config:
     SQLALCHEMY_DATABASE_URI = str(os.environ.get('DATABASE_URL'))
 
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
-
-    # Uploading images
-    UPLOAD_FOLDER = os.path.join(base_dir, 'app/static/images')
 
     @staticmethod
     def init_app(app):
@@ -29,7 +30,6 @@ config = {
     'prod': Config,
     'default': DevelopmentConfig
 }
-
 
 ALLOWED_EXTENSIONS = ('png', 'jpg', 'jpeg', 'gif')
 
