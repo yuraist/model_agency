@@ -135,7 +135,10 @@ def manager(id):
 def model(id):
     model = Model.query.filter_by(id=id).first()
     avatar = Photo.query.filter_by(id=model.avatar_id).first()
-    return render_template('model.html', model=model, avatar_filename=avatar.name)
+    avatar_name = None
+    if avatar is not None:
+        avatar_name = avatar.name
+    return render_template('model.html', model=model, avatar_filename=avatar_name)
 
 
 @main.route('/club/<id>')

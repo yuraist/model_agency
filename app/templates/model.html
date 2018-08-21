@@ -6,9 +6,11 @@
   <h2>{{ model.full_name }}</h2>
 
   <div class="model-profile">
-    <div class="avatar">
-      <img src="{{ url_for('static', filename='images/{}'.format(avatar_filename)) }}" alt="" class="avatar">
-    </div>
+    {% if avatar_filename != None %}
+      <div class="avatar">
+        <img src="{{ url_for('static', filename='images/{}'.format(avatar_filename)) }}" alt="" class="avatar">
+      </div>
+    {% endif %}
     <div class="model-info">
       <table>
         <tr>
@@ -47,9 +49,9 @@
     </div>
     {% if model.photos %}
       <div class="gallery">
-{#        {% for photo in model.photos %}#}
-{#          <img src="{{ url_for('static', filename='images/{}'.format(photo.name)) }}" alt="" class="gallery-photo">#}
-{#        {% endfor %}#}
+        {#        {% for photo in model.photos %}#}
+        {#          <img src="{{ url_for('static', filename='images/{}'.format(photo.name)) }}" alt="" class="gallery-photo">#}
+        {#        {% endfor %}#}
       </div>
     {% endif %}
   </div>
