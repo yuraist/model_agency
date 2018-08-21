@@ -13,7 +13,10 @@ from app.models import *
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
-app = create_app('dev')
+app = create_app(os.environ.get('CONFIG'))
+
+print('App has been created now and UPLOAD_FOLDER is equal to {}'.format(app.config['UPLOAD_FOLDER']))
+
 manager = Manager(app)
 migrate = Migrate(app, db)
 

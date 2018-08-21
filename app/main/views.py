@@ -1,13 +1,19 @@
-from flask import render_template, redirect, url_for, request
+import os
+
+from flask import render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_required
+from werkzeug.utils import secure_filename
 
 from . import main
-from .forms import AddManagerForm, AddModelForm, AddClubForm
+from .forms import AddManagerForm, AddClubForm
 
+from manage import app
 from app import db
-from app.models import User, Club, Model
+from app.models import User, Club, Model, Photo
+from config import allowed_file
 
 from datetime import datetime
+
 
 @main.route('/')
 @login_required
@@ -36,16 +42,16 @@ def register_manager():
         # If there is no manager with the username then create a new one
         if manager is None:
             # Create a new manager
-            new_manager = User()
-            new_manager.name = name
-            new_manager.username = username
-            new_manager.password = password
+            manager = User()
+            manager.name = name
+            manager.username = username
+            manager.password = password
 
             # Save him into the database
-            db.session.add(new_manager)
+            db.session.add(manager)
             db.session.commit()
 
-        return redirect(url_for('main.manager', id=new_manager.id))
+        return redirect(url_for('main.manager', id=manager.id))
     return render_template('register_manager.html', form=form)
 
 
@@ -67,11 +73,32 @@ def create_model():
         model.club_id = int(request.form['club'])
         model.manager_id = current_user.id
 
+        # Handle image uploading
+        if 'file' in request.files:
+            file = request.files['file']
+
+            if file.filename == '':
+                flash('Не выбран файл')
+                return redirect(request.url)
+
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(filepath)
+
+                photo = Photo()
+                photo.name = filename
+                photo.url = filepath
+
+                db.session.add(photo)
+                db.session.commit()
+
+                model.avatar_id = photo.id
+
         db.session.add(model)
         db.session.commit()
 
         return redirect(url_for('main.model', id=model.id))
-
     return render_template('create_model.html', clubs=clubs, errors=errors)
 
 
@@ -108,7 +135,8 @@ def manager(id):
 @main.route('/model/<id>')
 def model(id):
     model = Model.query.filter_by(id=id).first()
-    return render_template('model.html', model=model)
+    avatar = Photo.query.filter_by(id=model.avatar_id).first()
+    return render_template('model.html', model=model, avatar_filename=avatar.name)
 
 
 @main.route('/club/<id>')

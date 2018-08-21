@@ -7,7 +7,7 @@
   <h2>Новая модель</h2>
 
   <div class="model-form">
-    <form action="{{ url_for('main.create_model') }}" method="post">
+    <form action="{{ url_for('main.create_model') }}" method="post" enctype="multipart/form-data">
 
       <div class="left-inputs">
         <label for="fullname">ФИО</label>
@@ -44,7 +44,7 @@
         </div>
         <div class="upload-file">
           <label for="file">Загрузить фото</label>
-          <input type="file" name="avatar" id="file">
+          <input type="file" name="file" id="file">
         </div>
       </div>
 
