@@ -19,7 +19,7 @@
         </tr>
         <tr>
           <td>Дата рождения</td>
-          <td>{{ model.date_of_birth }}</td>
+          <td>{{ model.date_of_birth.strftime('%d.%m.%Y') }}</td>
         </tr>
         <tr>
           <td>Город</td>
@@ -27,23 +27,49 @@
         </tr>
         <tr>
           <td>Номер телефона</td>
-          <td>{{ model.phone }}</td>
+          {% if model.phone == '' %}
+            <td>Не указан</td>
+          {% else %}
+            <td>{{ model.phone }}</td>
+          {% endif %}
         </tr>
         <tr>
           <td>Дата начала работы</td>
-          <td>{{ model.start_date }}</td>
+          {% if model.start_date is not none %}
+            <td>{{ model.start_date.strftime('%d.%m.%Y') }}</td>
+          {% else %}
+            <td>Не указана</td>
+          {% endif %}
         </tr>
         <tr>
           <td>Желаемая дата вылета</td>
-          <td>{{ model.departure_date }}</td>
+          {% if model.departure_date is not none %}
+            <td>{{ model.departure_date.strftime('%d.%m.%Y') }}</td>
+          {% else %}
+            <td>Не указана</td>
+          {% endif %}
         </tr>
         <tr>
           <td>Цена билета</td>
-          <td>{{ model.ticket_price }}</td>
+          {% if model.ticket_price is not none %}
+            <td>{{ model.ticket_price }}</td>
+          {% else %}
+            <td>Не указана</td>
+          {% endif %}
         </tr>
         <tr>
           <td>Клуб</td>
-          <td>{{ model.club.name }}</td>
+          <td><a href="{{ url_for('main.club', id=model.club.id) }}">{{ model.club.name }}</a></td>
+        </tr>
+        <tr>
+          <td>Менеджер</td>
+          <td><a href="{{ url_for('main.manager', id=model.manager.id) }}">
+            {% if model.manager.name == None %}
+              {{ model.manager.username }}
+            {% else %}
+              {{ model.manager.name }}
+            {% endif %}
+          </a></td>
         </tr>
       </table>
     </div>

@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import login_manager
 
-from datetime import date
+from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -24,6 +24,8 @@ class Role(db.Model):
     name = db.Column(db.String(64), unique=True)
     permissions = db.Column(db.Integer)
     default = db.Column(db.Boolean, default=False, index=True)
+
+    # Relations
     users = db.relationship('User', backref='role', lazy='dynamic')
 
     @staticmethod
@@ -68,11 +70,13 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64), index=True)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
+
+    is_root = db.Column(db.Boolean, default=False)
     is_admin = db.Column(db.Boolean, default=False)
 
+    # Relations
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     avatar_id = db.Column(db.Integer, db.ForeignKey('photos.id'))
-
     models = db.relationship('Model', backref='manager')
     archive = db.relationship('Contract', backref='manager', lazy='dynamic')
 
@@ -101,17 +105,23 @@ class Model(db.Model):
     ticket_price = db.Column(db.Float)
     accepted = db.Column(db.Boolean, default=False)
 
+    # Relations
     manager_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     club_id = db.Column(db.Integer, db.ForeignKey('clubs.id'))
     avatar_id = db.Column(db.Integer, db.ForeignKey('photos.id'))
-
     photos = db.relationship('Photo', backref='model')
     contracts = db.relationship('Contract', backref='model', lazy='dynamic')
 
-    # TODO: - Count {start_date - date}
+    # TODO: - Add work periods (30/60)
     @property
     def end_date(self):
-        return 12
+        if self.start_date is not None:
+            delta = datetime.utcnow().date() - self.start_date
+            if delta.days > 0:
+                return 30 - delta.days
+            else:
+                return 30
+        return '-'
 
 
 class Club(db.Model):
@@ -120,6 +130,7 @@ class Club(db.Model):
     name = db.Column(db.String(128), unique=True)
     city = db.Column(db.String(64))
 
+    # Relations
     models = db.relationship('Model', backref='club')
 
     def __repr__(self):
@@ -138,6 +149,8 @@ class Contract(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     start_date = db.Column(db.Date)
     work_period = db.Column(db.Integer)  # Period of work in days
+
+    # Relations
     model_id = db.Column(db.Integer, db.ForeignKey('models.id'))
     club_id = db.Column(db.Integer, db.ForeignKey('clubs.id'))
     manager_id = db.Column(db.Integer, db.ForeignKey('users.id'))

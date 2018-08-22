@@ -20,8 +20,12 @@
         </tr>
         {% for model in models %}
           <tr>
-            <td>{{ model.full_name }}</td>
-            <td>{{ model.start_date }}</td>
+            <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
+            {% if model.start_date is not none %}
+              <td>{{ model.start_date.strftime('%d.%m.%Y') }}</td>
+            {% else %}
+              <td>Дата не указана</td>
+            {% endif %}
           </tr>
         {% endfor %}
       </table>

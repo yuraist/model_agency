@@ -82,14 +82,23 @@ def create_model():
 
     if request.method == 'POST':
         model = Model()
+
+        # Required fields
         model.full_name = request.form['fullname']
         model.city = request.form['city']
         model.date_of_birth = datetime.strptime(request.form['date_of_birth'], '%d.%m.%Y').date()
+
+        # Optional fields
         model.phone = request.form['phone']
-        model.start_date = datetime.strptime(request.form['start_date'], '%d.%m.%Y').date()
-        model.departure_date = datetime.strptime(request.form['departure_date'], '%d.%m.%Y').date()
-        model.ticket_price = int(request.form['ticket_price'])
-        model.club_id = int(request.form['club'])
+        if request.form['start_date'] != '':
+            model.start_date = datetime.strptime(request.form['start_date'], '%d.%m.%Y').date()
+        if request.form['departure_date'] != '':
+            model.departure_date = datetime.strptime(request.form['departure_date'], '%d.%m.%Y').date()
+
+        if request.form['ticket_price'] != '':
+            model.ticket_price = float(request.form['ticket_price'])
+        if request.form['club'] != '':
+            model.club_id = int(request.form['club'])
         model.manager_id = current_user.id
 
         # Handle image uploading
