@@ -35,7 +35,6 @@ def register_manager():
         username = form.username.data
         password = form.password.data
 
-        # TODO: - Add uploading photo
         # Try to find an existing manager
         manager = User.query.filter_by(username=username).first()
         # If there is no manager with the username then create a new one
@@ -45,6 +44,27 @@ def register_manager():
             manager.name = name
             manager.username = username
             manager.password = password
+
+            # Handle image uploading
+            file = form.photo.data
+            if file is not None:
+                if file.filename == '':
+                    flash('Не выбран файл')
+                    return redirect(request.url)
+
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file_path = os.path.join(UPLOAD_FOLDER, filename)
+                    file.save(file_path)
+
+                    photo = Photo()
+                    photo.name = filename
+                    photo.url = file_path
+
+                    db.session.add(photo)
+                    db.session.commit()
+
+                    manager.avatar_id = photo.id
 
             # Save him into the database
             db.session.add(manager)
@@ -82,12 +102,12 @@ def create_model():
 
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                filepath = os.path.join(UPLOAD_FOLDER, filename)
-                file.save(filepath)
+                file_path = os.path.join(UPLOAD_FOLDER, filename)
+                file.save(file_path)
 
                 photo = Photo()
                 photo.name = filename
-                photo.url = filepath
+                photo.url = file_path
 
                 db.session.add(photo)
                 db.session.commit()
@@ -128,7 +148,11 @@ def create_club():
 def manager(id):
     manager = User.query.filter_by(id=id).first()
     models = manager.models
-    return render_template('manager.html', manager=manager, models=models)
+    avatar = Photo.query.filter_by(id=manager.avatar_id).first()
+    avatar_name = None
+    if avatar is not None:
+        avatar_name = avatar.name
+    return render_template('manager.html', manager=manager, models=models, avatar_filename=avatar_name)
 
 
 @main.route('/model/<id>')

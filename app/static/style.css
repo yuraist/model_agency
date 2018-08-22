@@ -165,6 +165,10 @@ input[type=text], input[type=password] {
     font-size: 1em;
 }
 
+.model-form input, .model-form select {
+    width: 300px;
+}
+
 #remember-input {
     text-align: left;
 }
