@@ -22,7 +22,7 @@
       {% for model in models %}
         <tr>
           <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
-          <td>{{ model.club.name }}</td>
+          <td><a href="{{ url_for('main.club', id=model.club_id) }}">{{ model.club.name }}</a></td>
           <td>{{ model.end_date }} дней</td>
         </tr>
       {% endfor %}

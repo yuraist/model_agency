@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактировать модель{% endblock %}
+
+
+{% block content %}
+  <div class="head">
+    <h2>Редактировать модель</h2>
+    <a href="{{ url_for('main.delete_model', id=model.id) }}">Удалить модель</a>
+  </div>
+
+  <div class="model-form">
+    <form action="{{ url_for('main.edit_model', id=model.id) }}" method="post" enctype="multipart/form-data">
+
+      <p>
+        <label for="fullname">ФИО</label><br>
+        <input type="text" name="fullname" placeholder="Иванова Алина Алексеевна" value="{{ model.full_name }}"
+               required>
+
+      <p>
+        <label for="date_of_birth">Дата рождения</label><br>
+        <input type="text" name="date_of_birth" placeholder="01.01.1996"
+               value="{{ model.date_of_birth.strftime('%d.%m.%Y') }}" required>
+
+      <p>
+        <label for="city">Город</label><br>
+        <input type="text" name="city" placeholder="Москва" value="{{ model.city }}" required>
+
+      <p>
+        <label for="phone">Номер телефона</label><br>
+        <input type="text" name="phone" placeholder="+79112345678" value="{{ model.phone }}">
+
+      <p>
+        <label for="departure_date">Желаемая дата вылета</label><br>
+        <input type="text" name="departure_date" placeholder="01.01.2019"
+               value="{{ model.departure_date.strftime('%d.%m.%Y') }}">
+
+      <p>
+        <label for="ticket_price">Цена билета</label><br>
+        <input type="text" name="ticket_price" placeholder="3500" value="{{ model.ticket_price }}">
+
+      <p>
+        <label for="start_date">Дата начала работы</label><br>
+        <input type="text" name="start_date" placeholder="01.01.2019"
+               value="{{ model.start_date.strftime('%d.%m.%Y') }}">
+
+      <p>
+        <label for="period">Срок работы</label><br>
+        <select name="period" id="period">
+          {% if model.period == 30 %}
+            <option value="30" selected="selected">30 дней</option>
+            <option value="60">60 дней</option>
+          {% elif model.period == 60 %}
+            <option value="30">30 дней</option>
+            <option value="60" selected="selected">60 дней</option>
+          {% else %}
+            <option value="30">30 дней</option>
+            <option value="60">60 дней</option>
+          {% endif %}
+        </select>
+
+      <p>
+        <label for="club">Клуб</label><br>
+        <select name="club" id="club">
+          {% for club in clubs %}
+            <option value="{{ club.id }}"
+                    {% if model.club_id == club.id %}selected="selected"{% endif %}>{{ club.name }}</option>
+          {% endfor %}
+        </select>
+
+        <input type="submit" value="Сохранить" id="submit">
+    </form>
+  </div>
+{% endblock %}
+
+{#{% block footer %}#}
+{#  {% include "auth/_auth_footer.html" %}#}
+{#{% endblock %}#}

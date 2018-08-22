@@ -3,7 +3,10 @@
 {% block title %}Модель {{ model.full_name }}{% endblock %}
 
 {% block content %}
-  <h2>{{ model.full_name }}</h2>
+  <div class="head">
+    <h2>{{ model.full_name }}</h2>
+    <a href="{{ url_for('main.edit_model', id=model.id) }}">Редактировать</a>
+  </div>
 
   <div class="model-profile">
     {% if avatar_filename != None %}

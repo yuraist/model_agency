@@ -41,6 +41,16 @@ nav ul {
     font-size: 0.9em;
 }
 
+.head h2, .head a {
+    display: inline-block;
+}
+
+.head a {
+    float:right;
+    text-decoration: underline;
+    color: #4473ff;
+}
+
 .content {
     padding-top: 40px;
     width: 90%;

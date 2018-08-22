@@ -17,9 +17,9 @@ from datetime import datetime
 @main.route('/')
 @login_required
 def index():
-    managers = User.query.all()
-    models = Model.query.all()
-    clubs = Club.query.all()
+    managers = User.query.order_by(User.id.desc()).all()
+    models = Model.query.order_by(Model.id.desc()).all()
+    clubs = Club.query.order_by(Club.id.desc()).all()
     return render_template('main.html', managers=managers,
                            models=models,
                            clubs=clubs)
@@ -92,6 +92,8 @@ def create_model():
         model.phone = request.form['phone']
         if request.form['start_date'] != '':
             model.start_date = datetime.strptime(request.form['start_date'], '%d.%m.%Y').date()
+        if request.form['period'] != '':
+            model.period = int(request.form['period'])
         if request.form['departure_date'] != '':
             model.departure_date = datetime.strptime(request.form['departure_date'], '%d.%m.%Y').date()
 
@@ -128,6 +130,45 @@ def create_model():
 
         return redirect(url_for('main.model', id=model.id))
     return render_template('create_model.html', clubs=clubs, errors=errors)
+
+
+@main.route('/edit_model/<id>', methods=['get', 'post'])
+def edit_model(id):
+    if request.method == 'GET':
+        model = Model.query.filter_by(id=id).first()
+        clubs = Club.query.all()
+    elif request.method == 'POST':
+        model = Model.query.filter_by(id=id).first()
+        # Required fields
+        model.full_name = request.form['fullname']
+        model.city = request.form['city']
+        model.date_of_birth = datetime.strptime(request.form['date_of_birth'], '%d.%m.%Y').date()
+
+        # Optional fields
+        model.phone = request.form['phone']
+        if request.form['start_date'] != '':
+            model.start_date = datetime.strptime(request.form['start_date'], '%d.%m.%Y').date()
+        if request.form['period'] != '':
+            model.period = int(request.form['period'])
+        if request.form['departure_date'] != '':
+            model.departure_date = datetime.strptime(request.form['departure_date'], '%d.%m.%Y').date()
+
+        if request.form['ticket_price'] != '':
+            model.ticket_price = float(request.form['ticket_price'])
+        if request.form['club'] != '':
+            model.club_id = int(request.form['club'])
+
+        db.session.commit()
+        return redirect(url_for('main.model', id=model.id))
+    return render_template('edit_model.html', model=model, clubs=clubs)
+
+
+@main.route('/delete_model/<id>')
+def delete_model(id):
+    model = Model.query.filter_by(id=id).first()
+    db.session.delete(model)
+    db.session.commit()
+    return redirect(url_for('main.index'))
 
 
 @main.route('/create_club', methods=['get', 'post'])

@@ -6,6 +6,7 @@ from . import login_manager
 
 from datetime import datetime
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -104,6 +105,7 @@ class Model(db.Model):
     next_date = db.Column(db.Date)
     ticket_price = db.Column(db.Float)
     accepted = db.Column(db.Boolean, default=False)
+    period = db.Column(db.Integer)
 
     # Relations
     manager_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -112,15 +114,14 @@ class Model(db.Model):
     photos = db.relationship('Photo', backref='model')
     contracts = db.relationship('Contract', backref='model', lazy='dynamic')
 
-    # TODO: - Add work periods (30/60)
     @property
     def end_date(self):
-        if self.start_date is not None:
+        if self.start_date is not None and self.period is not None:
             delta = datetime.utcnow().date() - self.start_date
             if delta.days > 0:
-                return 30 - delta.days
+                return self.period - delta.days
             else:
-                return 30
+                return self.period
         return '-'
 
 
