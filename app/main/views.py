@@ -59,23 +59,24 @@ def register_manager():
             # Handle image uploading
             file = form.photo.data
             if file is not None:
-                if file.filename == '':
-                    flash('Не выбран файл')
-                    return redirect(request.url)
+                if type(file) != str:
+                    if file.filename == '':
+                        flash('Не выбран файл')
+                        return redirect(request.url)
 
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(UPLOAD_FOLDER, filename)
-                    file.save(file_path)
+                    if file and allowed_file(file.filename):
+                        filename = secure_filename(file.filename)
+                        file_path = os.path.join(UPLOAD_FOLDER, filename)
+                        file.save(file_path)
 
-                    photo = Photo()
-                    photo.name = filename
-                    photo.url = file_path
+                        photo = Photo()
+                        photo.name = filename
+                        photo.url = file_path
 
-                    db.session.add(photo)
-                    db.session.commit()
+                        db.session.add(photo)
+                        db.session.commit()
 
-                    manager.avatar_id = photo.id
+                        manager.avatar_id = photo.id
 
             # Save him into the database
             db.session.add(manager)
