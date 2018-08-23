@@ -17,9 +17,18 @@ from datetime import datetime
 @main.route('/')
 @login_required
 def index():
-    managers = User.query.order_by(User.id.desc()).all()
-    models = Model.query.order_by(Model.id.desc()).all()
-    clubs = Club.query.order_by(Club.id.desc()).all()
+    managers = []
+    models = []
+    clubs = []
+    if current_user.is_root:
+        managers = User.query.order_by(User.id.desc()).all()
+        models = Model.query.order_by(Model.id.desc()).all()
+        clubs = Club.query.order_by(Club.id.desc()).all()
+    elif current_user.is_admin:
+        models = Model.query.order_by(Model.id.desc()).all()
+    else:
+        models = Model.query.filter_by(manager_id=current_user.id).order_by(Model.id.desc()).all()
+
     return render_template('main.html', managers=managers,
                            models=models,
                            clubs=clubs)
@@ -34,6 +43,7 @@ def register_manager():
         name = form.name.data
         username = form.username.data
         password = form.password.data
+        is_admin = bool(form.is_admin.data)
 
         # Try to find an existing manager
         manager = User.query.filter_by(username=username).first()
@@ -44,6 +54,7 @@ def register_manager():
             manager.name = name
             manager.username = username
             manager.password = password
+            manager.is_admin = is_admin
 
             # Handle image uploading
             file = form.photo.data

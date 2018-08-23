@@ -18,6 +18,7 @@ def register():
         user.username = username
         user.password = password
         user.is_admin = True
+        user.is_root = True
         db.session.add(user)
         db.session.commit()
         flash('You are now a registered user')

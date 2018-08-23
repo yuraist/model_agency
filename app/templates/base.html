@@ -14,8 +14,11 @@
     <ul>
       <li class="nav-item"><a href="{{ url_for('main.index') }}" id="logo">Модельное агенство</a></li>
       <li class="nav-item"><a href="{{ url_for('main.create_model') }}" id="add-item">Добавить модель</a></li>
-      <li class="nav-item"><a href="{{ url_for('main.register_manager') }}" id="add-item">Добавить менеджера</a></li>
-      <li class="nav-item"><a href="{{ url_for('main.create_club') }}" id="add-item">Добавить клуб</a></li>
+      {% if current_user.is_root %}
+        <li class="nav-item"><a href="{{ url_for('main.register_manager') }}" id="add-item">Добавить менеджера</a></li>
+        <li class="nav-item"><a href="{{ url_for('main.create_club') }}" id="add-item">Добавить клуб</a></li>
+      {% endif %}
+
       {% if current_user.is_authenticated %}
         <li style="float:right; margin-top:26px;" class="nav-item"><a href="{{ url_for('auth.logout') }}">Выйти</a></li>
         <li style="float: right;" class="nav-item"><p>Менеджер <br>{{ current_user.username }}</p></li>

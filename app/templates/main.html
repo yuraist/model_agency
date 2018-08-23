@@ -28,27 +28,29 @@
       {% endfor %}
     </table>
   </div>
-  <div class="list" id="managers">
-    <h2 class="block-title">Менеджеры</h2>
-    <ul>
-      {% for manager in managers %}
-        <li><a href="{{ url_for('main.manager', id=manager.id) }}">
-          {% if manager.name == None %}
-            {{ manager.username }}
-          {% else %}
-            {{ manager.name }}
-          {% endif %}
-        </a></li>
-      {% endfor %}
-    </ul>
-  </div>
-  <div class="list" id="clubs">
-    <h2 class="block-title">Клубы</h2>
-    <ul>
-      {% for club in clubs %}
-        <li><a href="{{ url_for('main.club', id=club.id) }}">{{ club.name }}</a></li>
-      {% endfor %}
-    </ul>
-  </div>
+  {% if current_user.is_root %}
+    <div class="list" id="managers">
+      <h2 class="block-title">Менеджеры</h2>
+      <ul>
+        {% for manager in managers %}
+          <li><a href="{{ url_for('main.manager', id=manager.id) }}">
+            {% if manager.name == None %}
+              {{ manager.username }}
+            {% else %}
+              {{ manager.name }}
+            {% endif %}
+          </a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="list" id="clubs">
+      <h2 class="block-title">Клубы</h2>
+      <ul>
+        {% for club in clubs %}
+          <li><a href="{{ url_for('main.club', id=club.id) }}">{{ club.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
   </div>
 {% endblock %}

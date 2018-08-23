@@ -3,7 +3,15 @@
 {% block title %}Менеджер {{ manager.username }} {% endblock %}
 
 {% block content %}
-  <h2>Менеджер {{ manager.username }}</h2>
+  <h2>
+    {% if manager.is_admin %}
+      Администратор
+    {% else %}
+      Менеджер
+    {% endif %}
+    {{ manager.username }}
+  </h2>
+
 
   <div class="manager-profile">
     {% if avatar_filename != None %}

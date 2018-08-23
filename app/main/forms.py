@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, FileField, SubmitField, DateField, SelectField, MultipleFileField
+from wtforms import StringField, PasswordField, FileField, SubmitField, DateField, BooleanField
 from wtforms.validators import DataRequired, Length
 
 
@@ -7,6 +7,7 @@ class AddManagerForm(FlaskForm):
     name = StringField('Имя менеджера', validators=[DataRequired(), Length(1, 64)])
     username = StringField('Никнейм', validators=[DataRequired(), Length(1, 64)])
     password = PasswordField('Пароль', validators=[DataRequired()])
+    is_admin = BooleanField('Администратор', default=False)
     photo = FileField('Загрузить фото')
     submit = SubmitField('Добавить')
 
