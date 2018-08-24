@@ -170,6 +170,34 @@ def edit_model(id):
         if request.form['club'] != '':
             model.club_id = int(request.form['club'])
 
+        if 'is_accepted_by_root' in request.form:
+            if request.form['is_accepted_by_root'] == 'True':
+                model.is_accepted_by_root = True
+            elif request.form['is_accepted_by_root'] == 'False':
+                model.is_accepted_by_root = False
+
+        if 'is_accepted_by_admin' in request.form:
+            if request.form['is_accepted_by_admin'] == 'True':
+                model.is_accepted_by_admin = True
+            elif request.form['is_accepted_by_admin'] == 'False':
+                model.is_accepted_by_admin = False
+
+        print(model.is_accepted_by_root)
+        print(model.is_accepted_by_admin)
+        print(model.is_accepted_by_admin is not None and model.is_accepted_by_root is not None and \
+                not model.is_accepted_by_root and not model.is_accepted_by_admin)
+
+
+        if model.is_accepted_by_admin is not None and model.is_accepted_by_root is not None and \
+                not model.is_accepted_by_root and not model.is_accepted_by_admin:
+            avatar = Photo.query.filter_by(id=model.avatar_id).first()
+            if avatar is not None:
+                db.session.delete(avatar)
+            db.session.delete(model)
+            db.session.commit()
+            print('model has been deleted')
+            return redirect(url_for('main.index'))
+
         db.session.commit()
         return redirect(url_for('main.model', id=model.id))
     return render_template('edit_model.html', model=model, clubs=clubs)

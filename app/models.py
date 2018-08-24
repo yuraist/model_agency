@@ -104,7 +104,8 @@ class Model(db.Model):
     start_date = db.Column(db.Date)
     next_date = db.Column(db.Date)
     ticket_price = db.Column(db.Float)
-    accepted = db.Column(db.Boolean, default=False)
+    is_accepted_by_admin = db.Column(db.Boolean)
+    is_accepted_by_root = db.Column(db.Boolean)
     period = db.Column(db.Integer)
 
     # Relations

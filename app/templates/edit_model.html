@@ -33,16 +33,16 @@
       <p>
         <label for="departure_date">Желаемая дата вылета</label><br>
         <input type="text" name="departure_date" placeholder="01.01.2019"
-               value="{{ model.departure_date.strftime('%d.%m.%Y') }}">
+               value="{% if model.departure_date is not none %}{{ model.departure_date.strftime('%d.%m.%Y') }}{% endif %}">
 
       <p>
         <label for="ticket_price">Цена билета</label><br>
-        <input type="text" name="ticket_price" placeholder="3500" value="{{ model.ticket_price }}">
+        <input type="text" name="ticket_price" placeholder="3500" value="{% if model.ticket_price is not none %}{{ model.ticket_price }}{% endif %}">
 
       <p>
         <label for="start_date">Дата начала работы</label><br>
         <input type="text" name="start_date" placeholder="01.01.2019"
-               value="{{ model.start_date.strftime('%d.%m.%Y') }}">
+               value="{% if model.start_date is not none %}{{ model.start_date.strftime('%d.%m.%Y') }}{% endif %}">
 
       <p>
         <label for="period">Срок работы</label><br>
@@ -67,6 +67,24 @@
                     {% if model.club_id == club.id %}selected="selected"{% endif %}>{{ club.name }}</option>
           {% endfor %}
         </select>
+
+        {% if current_user.is_root %}
+          <p>
+            <label for="">Одобрена</label><br>
+            <select name="is_accepted_by_root" id="is_accepted_by_root">
+              <option value="-">-</option>
+              <option value="True" {% if model.is_accepted_by_root %}selected="selected"{% endif %}>Да</option>
+              <option value="False">Нет</option>
+            </select>
+        {% elif current_user.is_admin %}
+          <p>
+            <label for="">Одобрена</label><br>
+            <select name="is_accepted_by_admin" id="is_accepted_by_admin">
+              <option value="-">-</option>
+              <option value="True" {% if model.is_accepted_by_admin %}selected="selected"{% endif %}>Да</option>
+              <option value="False">Нет</option>
+            </select>
+        {% endif %}
 
         <input type="submit" value="Сохранить" id="submit">
     </form>
