@@ -6,7 +6,7 @@
 {% block content %}
   <div class="head">
     <h2>Редактировать модель</h2>
-    <a href="{{ url_for('main.delete_model', id=model.id) }}">Удалить модель</a>
+    <a href="{{ url_for('main.delete_model', id=model.id) }}" class="edit">Удалить модель</a>
   </div>
 
   <div class="model-form">

@@ -31,5 +31,4 @@ class AddModelForm(FlaskForm):
 
 class AddClubForm(FlaskForm):
     name = StringField('Название клуба', validators=[DataRequired(), Length(1, 128)])
-    city = StringField('Город', validators=[DataRequired(), Length(1, 64)])
     submit = SubmitField('Добавить')

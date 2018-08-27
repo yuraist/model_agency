@@ -29,6 +29,10 @@ def index():
     else:
         models = Model.query.filter_by(manager_id=current_user.id).order_by(Model.id.desc()).all()
 
+    for model in models:
+        if model.end_date == "В архиве":
+            models.remove(model)
+
     return render_template('main.html', managers=managers,
                            models=models,
                            clubs=clubs)
@@ -182,12 +186,6 @@ def edit_model(id):
             elif request.form['is_accepted_by_admin'] == 'False':
                 model.is_accepted_by_admin = False
 
-        print(model.is_accepted_by_root)
-        print(model.is_accepted_by_admin)
-        print(model.is_accepted_by_admin is not None and model.is_accepted_by_root is not None and \
-                not model.is_accepted_by_root and not model.is_accepted_by_admin)
-
-
         if model.is_accepted_by_admin is not None and model.is_accepted_by_root is not None and \
                 not model.is_accepted_by_root and not model.is_accepted_by_admin:
             avatar = Photo.query.filter_by(id=model.avatar_id).first()
@@ -218,14 +216,12 @@ def create_club():
     form = AddClubForm()
     if form.validate_on_submit():
         name = form.name.data
-        city = form.city.data
         club = Club.query.filter_by(name=name).first()
         if club is not None:
             errors.append('Клуб уже есть в базе')
             return render_template('create_club.html', form=form, errors=errors)
         club = Club()
         club.name = name
-        club.city = city
 
         db.session.add(club)
         db.session.commit()
@@ -237,12 +233,20 @@ def create_club():
 @main.route('/manager/<id>')
 def manager(id):
     manager = User.query.filter_by(id=id).first()
-    models = manager.models
+    models = manager.models.copy()
+
+    models_archive = []
+    for model in models:
+        if model.end_date == "В архиве" or model.is_archived:
+            models_archive.append(model)
+            models.remove(model)
+
     avatar = Photo.query.filter_by(id=manager.avatar_id).first()
     avatar_name = None
     if avatar is not None:
         avatar_name = avatar.name
-    return render_template('manager.html', manager=manager, models=models, avatar_filename=avatar_name)
+    return render_template('manager.html', manager=manager, models=models, models_archive=models_archive,
+                           avatar_filename=avatar_name)
 
 
 @main.route('/model/<id>')
@@ -258,4 +262,10 @@ def model(id):
 @main.route('/club/<id>')
 def club(id):
     club = Club.query.filter_by(id=id).first()
-    return render_template('club.html', club=club)
+    models = club.models.copy()
+    models_archive = []
+    for model in models:
+        if model.end_date == "В архиве" or model.is_archived:
+            models_archive.append(model)
+            models.remove(model)
+    return render_template('club.html', club=club, models_archive=models_archive)

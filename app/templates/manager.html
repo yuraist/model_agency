@@ -12,50 +12,60 @@
     {{ manager.username }}
   </h2>
 
-
+  <!-- Manager's Info -->
   <div class="manager-profile">
     {% if avatar_filename != None %}
       <div class="avatar">
         <img src="{{ url_for('static', filename='images/{}'.format(avatar_filename)) }}" alt="" class="avatar">
       </div>
     {% endif %}
+
+    <!-- Model List -->
     <div class="model-list">
       <h3>Всего моделей: {{ models|length }}</h3>
-      <table>
-        <tr class="table-head">
-          <td>Модель</td>
-          <td>Начало работы</td>
-        </tr>
-        {% for model in models %}
-          <tr>
-            <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
-            {% if model.start_date is not none %}
-              <td>{{ model.start_date.strftime('%d.%m.%Y') }}</td>
-            {% else %}
-              <td>Дата не указана</td>
+      {% if models|length > 0 %}
+        <table>
+          <tr class="table-head">
+            <td>Модель</td>
+            <td>Начало работы</td>
+            <td>Осталось <br> работать</td>
+          </tr>
+          {% for model in models %}
+            {% if not model.is_archived %}
+              <tr>
+                <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
+                {% if model.start_date is not none %}
+                  <td>{{ model.start_date.strftime('%d.%m.%Y') }}</td>
+                {% else %}
+                  <td>Дата не указана</td>
+                {% endif %}
+                <td>{{ model.end_date }} дней</td>
+              </tr>
             {% endif %}
+          {% endfor %}
+        </table>
+        </div>
+      {% endif %}
+
+    <!-- Model Archive -->
+    {% if models_archive|length > 0 %}
+      <div class="models-archive">
+        <h2>Архив моделей</h2>
+        <table>
+          <tr class="table-head">
+            <td>Фамилия Имя Отчество</td>
+            <td>Клуб</td>
+            {# <td>Новый срок</td> #}
           </tr>
-        {% endfor %}
-      </table>
-    </div>
-    <div class="models-archive">
-      <h2>Архив моделей</h2>
-      <table>
-        <tr>
-          <td>Фамилия Имя Отчество</td>
-          <td>Клуб</td>
-          <td>Окончание срока</td>
-          <td>Новый срок</td>
-        </tr>
-        {% for model in models_archive %}
-          <tr>
-            <td>{{ model.full_name }}</td>
-            <td>{{ model.club.name }}</td>
-            <td>{{ model.end_date }}</td>
-            <td>{{ model.next_date }}</td>
-          </tr>
-        {% endfor %}
-      </table>
-    </div>
+          {% for model in models_archive %}
+            <tr>
+              <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
+              <td><a href="{{ url_for('main.club', id=model.club.id) }}">{{ model.club.name }}</a></td>
+              {# <td>{{ model.next_date }}</td> #}
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    {% endif %}
   </div>
 {% endblock %}

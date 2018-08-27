@@ -12,7 +12,7 @@
 <nav>
   {% block nav %}
     <ul>
-      <li class="nav-item"><a href="{{ url_for('main.index') }}" id="logo">Модельное агенство</a></li>
+      <li class="nav-item"><a href="{{ url_for('main.index') }}" id="logo">Korea Center</a></li>
       <li class="nav-item"><a href="{{ url_for('main.create_model') }}" id="add-item">Добавить модель</a></li>
       {% if current_user.is_root %}
         <li class="nav-item"><a href="{{ url_for('main.register_manager') }}" id="add-item">Добавить менеджера</a></li>
@@ -22,10 +22,7 @@
       {% if current_user.is_authenticated %}
         <li style="float:right; margin-top:26px;" class="nav-item"><a href="{{ url_for('auth.logout') }}">Выйти</a></li>
         <li style="float: right;" class="nav-item">
-          <p>
-            {% if current_user.is_admin %}Админитсратор{% else %}Менеджер{% endif %} <br>
-            {{ current_user.username }}
-          </p>
+          <a href="{{ url_for('main.manager', id=current_user.id) }}"><strong class="my-profile">Мой <br> профиль</strong></a>
         </li>
       {% else %}
         <li style="float:right; margin-top:26px;" class="nav-item"><a href="{{ url_for('auth.logout') }}">Войти</a></li>
@@ -38,10 +35,7 @@
   {% block content %}{% endblock %}
 </div>
 {% block footer %}
-  <footer {% block footer_attr %}{% endblock %}>
-    <p>Модельное агентство &copy; 2018</p>
-    <p>Developed by <a href="https://vk.com/yuraist">@yuraist</a></p>
-  </footer>
+  {% include 'auth/_auth_footer.html' %}
 {% endblock %}
 </body>
 </html>

@@ -17,17 +17,22 @@
       <tr>
         <td class="table-head">Модель</td>
         <td class="table-head">Клуб</td>
+        <td class="table-head">Менеджер</td>
         <td class="table-head">Осталось <br> работать</td>
       </tr>
       {% for model in models %}
-        <tr>
-          <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
-          <td><a href="{{ url_for('main.club', id=model.club_id) }}">{{ model.club.name }}</a></td>
-          <td>{{ model.end_date }} дней</td>
-        </tr>
+        {% if not model.is_archived %}
+          <tr>
+            <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
+            <td><a href="{{ url_for('main.club', id=model.club_id) }}">{{ model.club.name }}</a></td>
+            <td><a href="{{ url_for('main.manager', id=model.manager_id) }}">{{ model.manager.username }}</a></td>
+            <td>{{ model.end_date }} дней</td>
+          </tr>
+        {% endif %}
       {% endfor %}
     </table>
   </div>
+
   {% if current_user.is_root %}
     <div class="list" id="managers">
       <h2 class="block-title">Менеджеры</h2>
@@ -43,6 +48,7 @@
         {% endfor %}
       </ul>
     </div>
+
     <div class="list" id="clubs">
       <h2 class="block-title">Клубы</h2>
       <ul>

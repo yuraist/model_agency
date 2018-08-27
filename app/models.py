@@ -107,6 +107,7 @@ class Model(db.Model):
     is_accepted_by_admin = db.Column(db.Boolean)
     is_accepted_by_root = db.Column(db.Boolean)
     period = db.Column(db.Integer)
+    is_archived = db.Column(db.Boolean, default=False)
 
     # Relations
     manager_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -119,10 +120,13 @@ class Model(db.Model):
     def end_date(self):
         if self.start_date is not None and self.period is not None:
             delta = datetime.utcnow().date() - self.start_date
-            if delta.days > 0:
+            if delta.days <= 0:
+                return self.period
+            elif (delta.days > 0) and (delta.days < self.period):
                 return self.period - delta.days
             else:
-                return self.period
+                self.is_archived = True
+                return 'В архиве'
         return '-'
 
 
@@ -130,7 +134,6 @@ class Club(db.Model):
     __tablename__ = 'clubs'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True)
-    city = db.Column(db.String(64))
 
     # Relations
     models = db.relationship('Model', backref='club')

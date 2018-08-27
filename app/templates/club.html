@@ -4,21 +4,48 @@
 
 {% block content %}
   <h2>{{ club.name }}</h2>
-  <div class="model-list">
-  <h3>Всего моделей: {{ club.models|length }}</h3>
-  <table>
-  <tr class="table-head">
-    <td>Фамилия Имя Отчество</td>
-    <td>Осталось работать (дней)</td>
-  </tr>
+
+  <!-- Model List -->
   {% if club.models|length > 0 %}
-    {% for model in club.models %}
-      <tr>
-        <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
-        <td>{{ model.end_date }}</td>
-      </tr>
-    {% endfor %}
+    <div class="model-list">
+      <h3>Всего моделей: {{ club.models|length }}</h3>
+      <table>
+        <tr class="table-head">
+          <td>Фамилия Имя Отчество</td>
+          <td>Осталось работать (дней)</td>
+        </tr>
+        {% if club.models|length > 0 %}
+          {% for model in club.models %}
+            {% if not model.is_archived %}
+              <tr>
+                <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
+                <td>{{ model.end_date }}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </table>
+    </div>
   {% endif %}
-  </table>
-  </div>
+
+  <!-- Model Archive -->
+  {% if models_archive|length > 0 %}
+    <div class="models-archive">
+      <h2>Архив моделей</h2>
+      <table>
+        <tr class="table-head">
+          <td>Фамилия Имя Отчество</td>
+          <td>Менеджер</td>
+          {# <td>Новый срок</td> #}
+        </tr>
+        {% for model in models_archive %}
+          <tr>
+            <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
+            <td><a href="{{ url_for('main.manager', id=model.manager_id) }}">{{ model.manager.username }}</a></td>
+            {# <td>{{ model.next_date }}</td> #}
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
 {% endblock %}
