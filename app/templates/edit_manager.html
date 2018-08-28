@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Редактировать менеджера
+{% endblock %}
+
+{% block content %}
+  <div class="head">
+    <h2>Редактировать менеджера</h2>
+    {% if current_user.id != manager.id %}
+      <a href="{{ url_for('main.delete_manager', id=manager.id) }}" class="edit">Удалить менеджера</a>
+    {% endif %}
+  </div>
+
+  <div class="login-form">
+    <form action="" method="post" enctype="multipart/form-data">
+      <p>
+        <label for="name">Имя менеджера</label>
+        <input type="text" name="name" id="name" size="64"
+               value="{% if manager.name != none %}{{ manager.name }} {% endif %}">
+
+      <p>
+        <label for="username">Никнейм</label>
+        <input type="text" name="username" id="username" size="64" value="{{ manager.username }}">
+
+      <p>
+        <label for="password">Пароль</label>
+        <input type="password" name="password" id="password" size="64">
+
+      <p>
+        <input type="checkbox" name="is_admin" {% if manager.is_admin %}checked{% endif %} id="is_admin" value="y">
+        <label for="is_admin"> Администратор</label>
+
+      <p>
+        <input type="submit" value="Сохранить изменения" id="submit">
+
+    </form>
+  </div>
+{% endblock %}

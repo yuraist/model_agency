@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактировать клуб{% endblock %}
+
+{% block content %}
+  <div class="head">
+    <h2>Редактировать клуб</h2>
+    <a href="{{ url_for('main.delete_club', id=club.id) }}" class="edit">Удалить клуб</a>
+  </div>
+
+  <div class="login-form">
+    <form action="{{ url_for('main.edit_club', id=club.id) }}" method="post">
+      <p>
+        <label for="name">Название</label><br>
+        <input type="text" name="name" id="name" size="64" value="{{ club.name }}">
+      </p>
+      <p>
+        <input type="submit" id="submit" value="Сохранить">
+      </p>
+    </form>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  {% include "auth/_auth_footer.html" %}
+{% endblock %}

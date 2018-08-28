@@ -3,14 +3,17 @@
 {% block title %}Менеджер {{ manager.username }} {% endblock %}
 
 {% block content %}
-  <h2>
-    {% if manager.is_admin %}
-      Администратор
-    {% else %}
-      Менеджер
-    {% endif %}
-    {{ manager.username }}
-  </h2>
+  <div class="head">
+    <h2>
+      {% if manager.is_admin %}
+        Администратор
+      {% else %}
+        Менеджер
+      {% endif %}
+      {{ manager.username }}
+    </h2>
+    <a href="{{ url_for('main.edit_manager', id=manager.id) }}" class="edit">Редактировать</a>
+  </div>
 
   <!-- Manager's Info -->
   <div class="manager-profile">
@@ -24,16 +27,26 @@
     <div class="model-list">
       <h3>Всего моделей: {{ models|length }}</h3>
       {% if models|length > 0 %}
-        <table>
+        <table style="text-align: center;">
           <tr class="table-head">
-            <td>Модель</td>
+            <td style="width: 100px;text-align: center;">Фото</td>
+            <td style="text-align: left;">Модель</td>
             <td>Начало работы</td>
             <td>Осталось <br> работать</td>
           </tr>
           {% for model in models %}
             {% if not model.is_archived %}
               <tr>
-                <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
+                <td style="width: 100px;">
+                  <p style="text-align: center;">
+                    <img style="border-radius: 3px;"
+                         src="{{ url_for('static', filename=('images/' + Photo.query.filter_by(id=model.avatar_id).first().name)) }}"
+                         class="model-list-avatar"
+                    />
+                  </p>
+                </td>
+                <td style="text-align: left;"><a
+                    href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
                 {% if model.start_date is not none %}
                   <td>{{ model.start_date.strftime('%d.%m.%Y') }}</td>
                 {% else %}

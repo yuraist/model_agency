@@ -7,6 +7,10 @@
     color: #575757;
 }
 
+img {
+    image-orientation: from-image;
+}
+
 a:hover {
     text-decoration: underline;
 }
@@ -70,6 +74,14 @@ nav ul {
 .content h3 {
     margin-bottom: 40px;
     font-size: 1.2em;
+}
+
+.model-profile, .manager-profile {
+    padding-top: 40px;
+}
+
+.model-info, .model-list {
+    padding-top: 20px;
 }
 
 a.edit {
@@ -235,7 +247,7 @@ input[type=text], input[type=password] {
 }
 
 img.avatar {
-    width: 250px;
+    width: 450px;
     margin: 20px;
 }
 
@@ -243,6 +255,10 @@ img.avatar {
     vertical-align: top;
     width: 49%;
     display: inline-block;
+}
+
+img.model-list-avatar {
+    height: 40px;
 }
 
 .models-archive {

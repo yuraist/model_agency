@@ -22,12 +22,12 @@ def index():
     clubs = []
     if current_user.is_root:
         managers = User.query.order_by(User.id.desc()).all()
-        models = Model.query.order_by(Model.id.desc()).all()
+        models = Model.query.order_by(Model.id.desc()).all().copy()
         clubs = Club.query.order_by(Club.id.desc()).all()
     elif current_user.is_admin:
-        models = Model.query.order_by(Model.id.desc()).all()
+        models = Model.query.order_by(Model.id.desc()).all().copy()
     else:
-        models = Model.query.filter_by(manager_id=current_user.id).order_by(Model.id.desc()).all()
+        models = Model.query.filter_by(manager_id=current_user.id).order_by(Model.id.desc()).all().copy()
 
     for model in models:
         if model.end_date == "В архиве":
@@ -35,7 +35,8 @@ def index():
 
     return render_template('main.html', managers=managers,
                            models=models,
-                           clubs=clubs)
+                           clubs=clubs,
+                           Photo=Photo)
 
 
 @main.route('/register_manager', methods=['get', 'post'])
@@ -88,6 +89,43 @@ def register_manager():
 
         return redirect(url_for('main.manager', id=manager.id))
     return render_template('register_manager.html', form=form)
+
+
+@main.route('/edit_manager/<id>', methods=['get', 'post'])
+def edit_manager(id):
+    manager = User.query.filter_by(id=id).first()
+    if request.method == 'POST':
+        name = request.form['name']
+        username = request.form['username']
+        password = request.form['password']
+        is_admin = request.form.get('is_admin')
+        print(is_admin)
+
+        if name != None and name != '':
+            manager.name = name
+
+        if username != None and username != '':
+            manager.username = username
+
+        if is_admin != '':
+            manager.is_admin = bool(is_admin)
+
+        if password != None and password != '':
+            manager.password = password
+
+        db.session.add(manager)
+        db.session.commit()
+        return redirect(url_for('main.manager', id=manager.id))
+
+    return render_template('edit_manager.html', manager=manager)
+
+
+@main.route('/delete_manager/<id>')
+def delete_manager(id):
+    manager = User.query.filter_by(id=id).first()
+    db.session.delete(manager)
+    db.session.commit()
+    return redirect(url_for('main.index'))
 
 
 @main.route('/create_model', methods=['get', 'post'])
@@ -230,6 +268,28 @@ def create_club():
     return render_template('create_club.html', errors=errors, form=form)
 
 
+@main.route('/edit_club/<id>', methods=['get', 'post'])
+def edit_club(id):
+    club = Club.query.filter_by(id=id).first()
+    if request.method == 'POST':
+        name = request.form['name']
+        if name != None and name != '':
+            club.name = name
+            db.session.add(club)
+            db.session.commit()
+
+        return redirect(url_for('main.club', id=club.id))
+    return render_template('edit_club.html', club=club)
+
+
+@main.route('/delete_club/<id>')
+def delete_club(id):
+    club = Club.query.filter_by(id=id).first()
+    db.session.delete(club)
+    db.session.commit()
+    return redirect(url_for('main.index'))
+
+
 @main.route('/manager/<id>')
 def manager(id):
     manager = User.query.filter_by(id=id).first()
@@ -246,7 +306,7 @@ def manager(id):
     if avatar is not None:
         avatar_name = avatar.name
     return render_template('manager.html', manager=manager, models=models, models_archive=models_archive,
-                           avatar_filename=avatar_name)
+                           avatar_filename=avatar_name, Photo=Photo)
 
 
 @main.route('/model/<id>')
@@ -268,4 +328,4 @@ def club(id):
         if model.end_date == "В архиве" or model.is_archived:
             models_archive.append(model)
             models.remove(model)
-    return render_template('club.html', club=club, models_archive=models_archive)
+    return render_template('club.html', club=club, models_archive=models_archive, Photo=Photo)

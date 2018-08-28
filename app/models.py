@@ -121,8 +121,10 @@ class Model(db.Model):
         if self.start_date is not None and self.period is not None:
             delta = datetime.utcnow().date() - self.start_date
             if delta.days <= 0:
+                self.is_archived = False
                 return self.period
             elif (delta.days > 0) and (delta.days < self.period):
+                self.is_archived = False
                 return self.period - delta.days
             else:
                 self.is_archived = True

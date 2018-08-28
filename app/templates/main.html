@@ -15,6 +15,7 @@
     <h2 class="block-title">Модели</h2>
     <table>
       <tr>
+        <td class="table-head" style="width: 100px;text-align: center;">Фото</td>
         <td class="table-head">Модель</td>
         <td class="table-head">Клуб</td>
         <td class="table-head">Менеджер</td>
@@ -23,6 +24,14 @@
       {% for model in models %}
         {% if not model.is_archived %}
           <tr>
+            <td style="width: 100px;">
+              <p style="text-align: center;">
+                <img style="border-radius: 3px;"
+                     src="{{ url_for('static', filename=('images/' + Photo.query.filter_by(id=model.avatar_id).first().name)) }}"
+                     class="model-list-avatar"
+                />
+              </p>
+            </td>
             <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
             <td><a href="{{ url_for('main.club', id=model.club_id) }}">{{ model.club.name }}</a></td>
             <td><a href="{{ url_for('main.manager', id=model.manager_id) }}">{{ model.manager.username }}</a></td>
