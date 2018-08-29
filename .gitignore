@@ -47,4 +47,5 @@ venv
 .idea/*
 
 # Images
-images/*
+*.jpg
+*.jpeg
