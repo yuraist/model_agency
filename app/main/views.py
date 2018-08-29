@@ -239,6 +239,34 @@ def edit_model(id):
     return render_template('edit_model.html', model=model, clubs=clubs)
 
 
+@main.route('/add_photos/<id>', methods=['get', 'post'])
+def add_photos(id):
+    if request.method == 'POST':
+        model = Model.query.filter_by(id=id).first()
+        files = dict(request.files)
+        if 'photos' in files:
+            photos = files['photos']
+            for photo in photos:
+                print(photo)
+                print(photo.filename)
+                print(allowed_file(photo.filename))
+                if photo != None and photo.filename != '' and allowed_file(photo.filename):
+                    filename = secure_filename(photo.filename)
+                    file_path = os.path.join(UPLOAD_FOLDER, filename)
+                    photo.save(file_path)
+
+                    db_photo = Photo()
+                    db_photo.name = filename
+                    db_photo.url = file_path
+                    db_photo.model_id = model.id
+
+                    db.session.add(db_photo)
+            db.session.commit()
+
+        return redirect(url_for('main.model', id=id))
+    return render_template('add_photos.html')
+
+
 @main.route('/delete_model/<id>')
 def delete_model(id):
     model = Model.query.filter_by(id=id).first()

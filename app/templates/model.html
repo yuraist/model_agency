@@ -78,9 +78,15 @@
     </div>
     {% if model.photos %}
       <div class="gallery">
-        {#        {% for photo in model.photos %}#}
-        {#          <img src="{{ url_for('static', filename='images/{}'.format(photo.name)) }}" alt="" class="gallery-photo">#}
-        {#        {% endfor %}#}
+        <div class="head">
+          <h2>Галерея</h2>
+          <a href="{{ url_for('main.add_photos', id=model.id) }}" class="edit">Добавить фото</a>
+        </div>
+        <div class="photo-list">
+          {% for photo in model.photos %}
+            <img src="{{ url_for('static', filename='images/{}'.format(photo.name)) }}" alt="" class="gallery-photo">
+          {% endfor %}
+        </div>
       </div>
     {% endif %}
   </div>

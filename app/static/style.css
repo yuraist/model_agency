@@ -328,3 +328,14 @@ select {
     width: 45%;
     display: inline-block;
 }
+
+.photo-list {
+    width: 100%;
+    display: inline-block;
+}
+
+img.gallery-photo {
+    height: 245px;
+    vertical-align: top;
+    margin-bottom: 2px;
+}

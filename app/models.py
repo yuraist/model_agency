@@ -112,8 +112,9 @@ class Model(db.Model):
     # Relations
     manager_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     club_id = db.Column(db.Integer, db.ForeignKey('clubs.id'))
-    avatar_id = db.Column(db.Integer, db.ForeignKey('photos.id'))
-    photos = db.relationship('Photo', backref='model')
+    avatar_id = db.Column(db.Integer)
+
+    photos = db.relationship('Photo', backref='model', lazy='dynamic', uselist=True)
     contracts = db.relationship('Contract', backref='model', lazy='dynamic')
 
     @property
@@ -149,6 +150,8 @@ class Photo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     url = db.Column(db.String(128))
+
+    model_id = db.Column(db.Integer, db.ForeignKey('models.id'))
 
 
 class Contract(db.Model):

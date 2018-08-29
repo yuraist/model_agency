@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Загрузка фото в галерею
+{% endblock %}
+
+{% block content %}
+  <div class="head">
+  <h2>Загрузить фото в галерею</h2>
+  </div>
+  <div class="login-form">
+    <form action="" enctype="multipart/form-data" method="post">
+      <label for="photos">Выберите фотографии</label>
+      <input type="file" multiple="multiple" id="photos" name="photos">
+      <input type="submit" value="Загрузить фотографии" id="submit">
+    </form>
+  </div>
+{% endblock %}
