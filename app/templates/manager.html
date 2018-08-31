@@ -12,7 +12,9 @@
       {% endif %}
       {{ manager.username }}
     </h2>
-    <a href="{{ url_for('main.edit_manager', id=manager.id) }}" class="edit">Редактировать</a>
+    {% if current_user.is_root %}
+      <a href="{{ url_for('main.edit_manager', id=manager.id) }}" class="edit">Редактировать</a>
+    {% endif %}
   </div>
 
   <!-- Manager's Info -->

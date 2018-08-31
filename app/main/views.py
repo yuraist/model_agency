@@ -20,14 +20,13 @@ def index():
     managers = []
     models = []
     clubs = []
-    if current_user.is_root:
+    if current_user.is_admin:
         managers = User.query.order_by(User.id.desc()).all()
         models = Model.query.order_by(Model.id.desc()).all().copy()
         clubs = Club.query.order_by(Club.id.desc()).all()
-    elif current_user.is_admin:
-        models = Model.query.order_by(Model.id.desc()).all().copy()
     else:
         models = Model.query.filter_by(manager_id=current_user.id).order_by(Model.id.desc()).all().copy()
+        clubs = Club.query.order_by(Club.id.desc()).all()
 
     for model in models:
         if model.end_date == "В архиве":

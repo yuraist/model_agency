@@ -4,18 +4,23 @@
 
 {% block content %}
   <h2>Новый клуб</h2>
-  <div class="login-form">
-    <form action="{{ url_for('main.create_club') }}" method="post">
-      {{ form.hidden_tag() }}
-      <p>
-        {{ form.name.label }}<br>
-        {{ form.name(size=64) }}
-      </p>
-      <p>
-        {{ form.submit() }}
-      </p>
-    </form>
-  </div>
+  {% if current_user.is_admin %}
+    <div class="login-form">
+      <form action="{{ url_for('main.create_club') }}" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+          {{ form.name.label }}<br>
+          {{ form.name(size=64) }}
+        </p>
+        <p>
+          {{ form.submit() }}
+        </p>
+      </form>
+    </div>
+  {% else %}
+    <p class="error">Создавать клубы могут только администраторы</p>
+  {% endif %}
+
 {% endblock %}
 
 {% block footer %}

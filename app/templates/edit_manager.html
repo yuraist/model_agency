@@ -7,7 +7,7 @@
 {% block content %}
   <div class="head">
     <h2>Редактировать менеджера</h2>
-    {% if current_user.id != manager.id %}
+    {% if current_user.is_root and current_user.id != manager.id %}
       <a href="{{ url_for('main.delete_manager', id=manager.id) }}" class="edit">Удалить менеджера</a>
     {% endif %}
   </div>

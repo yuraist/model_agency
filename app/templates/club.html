@@ -5,7 +5,9 @@
 {% block content %}
   <div class="head">
     <h2>{{ club.name }}</h2>
-    <a href="{{ url_for('main.edit_club', id=club.id) }}" class="edit">Редактировать</a>
+    {% if current_user.is_admin %}
+      <a href="{{ url_for('main.edit_club', id=club.id) }}" class="edit">Редактировать</a>
+    {% endif %}
   </div>
 
   <!-- Model List -->

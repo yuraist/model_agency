@@ -42,7 +42,7 @@
     </table>
   </div>
 
-  {% if current_user.is_root %}
+  {% if current_user.is_admin %}
     <div class="list" id="managers">
       <h2 class="block-title">Менеджеры</h2>
       <ul>
@@ -57,15 +57,13 @@
         {% endfor %}
       </ul>
     </div>
-
-    <div class="list" id="clubs">
-      <h2 class="block-title">Клубы</h2>
-      <ul>
-        {% for club in clubs %}
-          <li><a href="{{ url_for('main.club', id=club.id) }}">{{ club.name }}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
   {% endif %}
+  <div class="list" id="clubs">
+    <h2 class="block-title">Клубы</h2>
+    <ul>
+      {% for club in clubs %}
+        <li><a href="{{ url_for('main.club', id=club.id) }}">{{ club.name }}</a></li>
+      {% endfor %}
+    </ul>
   </div>
 {% endblock %}
