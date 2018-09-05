@@ -11,27 +11,39 @@
   </div>
 
   <!-- Model List -->
-  {% if club.models|length > 0 %}
-    <div class="model-list">
-      <h3>Всего моделей: {{ club.models|length }}</h3>
+  <div class="list">
+    <h3>Всего моделей: {{ models|length }}</h3>
+    {% if models|length > 0 %}
       <table>
         <tr class="table-head">
+          <td style="width: 100px;text-align: center;">Фото</td>
           <td>Фамилия Имя Отчество</td>
+          <td>Менеджер</td>
           <td>Осталось работать (дней)</td>
         </tr>
-        {% if club.models|length > 0 %}
-          {% for model in club.models %}
-            {% if not model.is_archived %}
-              <tr>
-                <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
-                <td>{{ model.end_date }}</td>
-              </tr>
-            {% endif %}
-          {% endfor %}
-        {% endif %}
+        {% for model in models %}
+          {% if not model.is_archived %}
+            <tr>
+              <td style="width: 100px;">
+                <p style="text-align: center;">
+                  {% if model.avatar_id is not none %}
+                    <img style="border-radius: 3px;"
+                         src="{{ url_for('static', filename=('images/' + Photo.query.filter_by(id=model.avatar_id).first().name)) }}"
+                         class="model-list-avatar"
+                    />
+                  {% endif %}
+                </p>
+              </td>
+              <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
+              <td><a href="{{ url_for('main.manager', id=model.manager_id) }}">{{ model.manager.username }}</a></td>
+              <td>{{ model.end_date }}</td>
+            </tr>
+          {% endif %}
+        {% endfor %}
       </table>
-    </div>
-  {% endif %}
+    {% endif %}
+  </div>
+
 
   <!-- Model Archive -->
   {% if models_archive|length > 0 %}

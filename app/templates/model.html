@@ -4,7 +4,18 @@
 
 {% block content %}
   <div class="head">
-    <h2>{{ model.full_name }}</h2>
+    <h2>
+      {{ model.full_name }} <br>
+      {% if ((model.is_accepted_by_admin is not none) and model.is_accepted_by_admin)
+      or ((model.is_accepted_by_root is not none) and model.is_accepted_by_root) %}
+        (Одобрена)
+      {% elif (model.is_accepted_by_admin is none) and (model.is_accepted_by_root is none) %}
+        (Ожидает одобрения)
+      {% else %}
+        (Не одобрена)
+      {% endif %}
+    </h2>
+    <a href="{{ url_for('main.delete_model', id=model.id) }}" class="delete-btn">Удалить модель</a>
     <a href="{{ url_for('main.edit_model', id=model.id) }}" class="edit">Редактировать</a>
   </div>
 

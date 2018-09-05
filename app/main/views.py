@@ -404,4 +404,4 @@ def club(id):
         if model.end_date == "В архиве" or model.is_archived:
             models_archive.append(model)
             models.remove(model)
-    return render_template('club.html', club=club, models_archive=models_archive, Photo=Photo)
+    return render_template('club.html', club=club, models=models, models_archive=models_archive, Photo=Photo)
