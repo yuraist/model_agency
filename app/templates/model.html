@@ -99,6 +99,7 @@
         <div class="head">
           <h2>Галерея</h2>
           <a href="{{ url_for('main.add_photos', id=model.id) }}" class="edit">Добавить фото</a>
+          <a href="{{ url_for('main.download_gallery', id=model.id) }}" class="edit">Скачать галлерею</a>
         </div>
         <div class="photo-list">
           {% for photo in model.photos %}

@@ -49,6 +49,10 @@ nav ul {
     font-size: 1.1em;
 }
 
+.head {
+    margin: 20px 0;
+}
+
 .head h2, .head a {
     display: inline-block;
 }
@@ -89,6 +93,7 @@ a.edit, a.delete-btn {
     border-radius: 25px;
     text-decoration: none;
     color: white;
+    margin-right: 15px;
 }
 
 a.edit {
