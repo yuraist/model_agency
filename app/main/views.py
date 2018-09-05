@@ -379,19 +379,20 @@ def download_gallery(id):
     model = Model.query.filter_by(id=id).first()
     zip_name = os.path.join(STATIC_FOLDER, 'gallery_{}.zip'.format(model.id))
     zf = zipfile.ZipFile(zip_name, 'w')
-    for photo in model.photos:
-        file_path = os.path.join(UPLOAD_FOLDER, photo.name)
-        zf.write(file_path)
-    zf.close()
     try:
-        print(zip_name)
+        for photo in model.photos:
+            file_path = os.path.join(UPLOAD_FOLDER, photo.name)
+            try:
+                zf.write(file_path)
+            except FileNotFoundError as e:
+                print(e)
+        zf.close()
         return send_file(zip_name,
                          as_attachment=True,
                          mimetype='application/zip',
                          attachment_filename=f'gallery_{model.id}.zip')
     except Exception:
         return redirect(url_for('main.model', id=model.id))
-
 
 
 @main.route('/club/<id>')
