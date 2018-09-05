@@ -6,6 +6,7 @@
   <div class="head">
     <h2>{{ club.name }}</h2>
     {% if current_user.is_admin %}
+      <a href="{{ url_for('main.delete_club', id=club.id) }}" class="delete-btn">Удалить клуб</a>
       <a href="{{ url_for('main.edit_club', id=club.id) }}" class="edit">Редактировать</a>
     {% endif %}
   </div>
