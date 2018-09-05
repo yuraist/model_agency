@@ -1,6 +1,7 @@
 import os
+import zipfile
 
-from flask import render_template, redirect, url_for, request, flash
+from flask import render_template, redirect, url_for, request, flash, send_file
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 
@@ -9,7 +10,7 @@ from .forms import AddManagerForm, AddClubForm
 
 from app import db
 from app.models import User, Club, Model, Photo
-from config import allowed_file, UPLOAD_FOLDER
+from config import allowed_file, UPLOAD_FOLDER, STATIC_FOLDER
 
 from datetime import datetime
 
@@ -112,6 +113,28 @@ def edit_manager(id):
         if password != None and password != '':
             manager.password = password
 
+            # Handle image uploading
+        if 'file' in request.files:
+            file = request.files['file']
+
+            if file.filename == '':
+                flash('Не выбран файл')
+                return redirect(request.url)
+
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(UPLOAD_FOLDER, filename)
+                file.save(file_path)
+
+                photo = Photo()
+                photo.name = filename
+                photo.url = file_path
+
+                db.session.add(photo)
+                db.session.commit()
+
+                manager.avatar_id = photo.id
+
         db.session.add(manager)
         db.session.commit()
         return redirect(url_for('main.manager', id=manager.id))
@@ -205,11 +228,16 @@ def edit_model(id):
             model.period = int(request.form['period'])
         if request.form['departure_date'] != '':
             model.departure_date = datetime.strptime(request.form['departure_date'], '%d.%m.%Y').date()
-
         if request.form['ticket_price'] != '':
             model.ticket_price = float(request.form['ticket_price'])
         if request.form['club'] != '':
             model.club_id = int(request.form['club'])
+        if request.form['height'] != '':
+            model.height = float(request.form['height'])
+        if request.form['weight'] != '':
+            model.weight = float(request.form['weight'])
+        if request.form['age'] != '':
+            model.age = int(request.form['age'])
 
         if 'is_accepted_by_root' in request.form:
             if request.form['is_accepted_by_root'] == 'True':
@@ -344,6 +372,26 @@ def model(id):
     if avatar is not None:
         avatar_name = avatar.name
     return render_template('model.html', model=model, avatar_filename=avatar_name)
+
+
+@main.route('/download_gallery/<id>')
+def download_gallery(id):
+    model = Model.query.filter_by(id=id).first()
+    zip_name = os.path.join(STATIC_FOLDER, 'gallery_{}.zip'.format(model.id))
+    zf = zipfile.ZipFile(zip_name, 'w')
+    for photo in model.photos:
+        file_path = os.path.join(UPLOAD_FOLDER, photo.name)
+        zf.write(file_path)
+    zf.close()
+    try:
+        print(zip_name)
+        return send_file(zip_name,
+                         as_attachment=True,
+                         mimetype='application/zip',
+                         attachment_filename=f'gallery_{model.id}.zip')
+    except Exception:
+        return redirect(url_for('main.model', id=model.id))
+
 
 
 @main.route('/club/<id>')

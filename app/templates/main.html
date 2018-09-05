@@ -26,10 +26,12 @@
           <tr>
             <td style="width: 100px;">
               <p style="text-align: center;">
-                <img style="border-radius: 3px;"
-                     src="{{ url_for('static', filename=('images/' + Photo.query.filter_by(id=model.avatar_id).first().name)) }}"
-                     class="model-list-avatar"
-                />
+                {% if model.avatar_id is not none %}
+                  <img style="border-radius: 3px;"
+                       src="{{ url_for('static', filename=('images/' + Photo.query.filter_by(id=model.avatar_id).first().name)) }}"
+                       class="model-list-avatar"
+                  />
+                {% endif %}
               </p>
             </td>
             <td><a href="{{ url_for('main.model', id=model.id) }}">{{ model.full_name }}</a></td>
@@ -45,17 +47,33 @@
   {% if current_user.is_admin %}
     <div class="list" id="managers">
       <h2 class="block-title">Менеджеры</h2>
-      <ul>
+      <table>
+        <tr>
+          <td class="table-head" style="width: 100px;text-align: center;">Фото</td>
+          <td class="table-head">Имя</td>
+        </tr>
         {% for manager in managers %}
-          <li><a href="{{ url_for('main.manager', id=manager.id) }}">
-            {% if manager.name == None %}
-              {{ manager.username }}
-            {% else %}
-              {{ manager.name }}
-            {% endif %}
-          </a></li>
+          <tr>
+            <td style="width: 100px;">
+              <p style="text-align: center;">
+                {% if manager.avatar_id is not none %}
+                  <img style="border-radius: 3px;"
+                       src="{{ url_for('static', filename=('images/' + Photo.query.filter_by(id=manager.avatar_id).first().name)) }}"
+                       class="model-list-avatar"
+                  />
+                {% endif %}
+              </p>
+            </td>
+            <td><a href="{{ url_for('main.manager', id=manager.id) }}">
+              {% if manager.name == None %}
+                {{ manager.username }}
+              {% else %}
+                {{ manager.name }}
+              {% endif %}
+            </a></td>
+          </tr>
         {% endfor %}
-      </ul>
+      </table>
     </div>
   {% endif %}
   <div class="list" id="clubs">

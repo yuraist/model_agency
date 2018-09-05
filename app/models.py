@@ -108,6 +108,9 @@ class Model(db.Model):
     is_accepted_by_root = db.Column(db.Boolean)
     period = db.Column(db.Integer)
     is_archived = db.Column(db.Boolean, default=False)
+    height = db.Column(db.Float)
+    weight = db.Column(db.Float)
+    age = db.Column(db.Integer)
 
     # Relations
     manager_id = db.Column(db.Integer, db.ForeignKey('users.id'))

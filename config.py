@@ -3,7 +3,8 @@ import os
 base_dir = os.path.abspath(os.path.dirname(__file__))
 
 # Uploading images
-UPLOAD_FOLDER = os.path.join(base_dir, 'app/static/images')
+STATIC_FOLDER = os.path.join(base_dir, 'app/static')
+UPLOAD_FOLDER = os.path.join(STATIC_FOLDER, 'images')
 
 
 class Config:

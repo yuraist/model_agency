@@ -8,7 +8,7 @@
   <div class="head">
     <h2>Редактировать менеджера</h2>
     {% if current_user.is_root and current_user.id != manager.id %}
-      <a href="{{ url_for('main.delete_manager', id=manager.id) }}" class="edit">Удалить менеджера</a>
+      <a href="{{ url_for('main.delete_manager', id=manager.id) }}" class="delete-btn">Удалить менеджера</a>
     {% endif %}
   </div>
 
@@ -30,6 +30,10 @@
       <p>
         <input type="checkbox" name="is_admin" {% if manager.is_admin %}checked{% endif %} id="is_admin" value="y">
         <label for="is_admin"> Администратор</label>
+
+      <p>
+        <label for="file">Изменить фото</label><br>
+        <input type="file" name="file" id="file">
 
       <p>
         <input type="submit" value="Сохранить изменения" id="submit">

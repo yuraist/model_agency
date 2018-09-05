@@ -84,15 +84,22 @@ nav ul {
     padding-top: 20px;
 }
 
-a.edit {
+a.edit, a.delete-btn {
     padding: 10px 20px;
     border-radius: 25px;
-    background-color: #4473ff;
     text-decoration: none;
     color: white;
 }
 
-a.edit:hover {
+a.edit {
+    background-color: #4473ff;
+}
+
+a.delete-btn {
+    background-color: #9C1A1C;
+}
+
+a.edit:hover, a.delete-btn:hover {
     opacity: 0.8;
 }
 

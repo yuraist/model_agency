@@ -20,6 +20,24 @@
           <td>ФИО</td>
           <td>{{ model.full_name }}</td>
         </tr>
+        {% if model.height is not none %}
+          <tr>
+            <td>Рост</td>
+            <td>{{ model.height }} см</td>
+          </tr>
+        {% endif %}
+        {% if model.weight is not none %}
+          <tr>
+            <td>Вес</td>
+            <td>{{ model.weight }} кг</td>
+          </tr>
+        {% endif %}
+        {% if model.age is not none %}
+          <tr>
+            <td>Возраст</td>
+            <td>{{ model.age }} лет</td>
+          </tr>
+        {% endif %}
         <tr>
           <td>Дата рождения</td>
           <td>{{ model.date_of_birth.strftime('%d.%m.%Y') }}</td>
