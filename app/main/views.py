@@ -383,7 +383,7 @@ def download_gallery(id):
         for photo in model.photos:
             file_path = os.path.join(UPLOAD_FOLDER, photo.name)
             try:
-                zf.write(file_path)
+                zf.write(file_path, photo.name)
             except FileNotFoundError as e:
                 print(e)
         zf.close()
